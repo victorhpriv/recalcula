@@ -1,0 +1,126 @@
+<div class="page-header">
+  <div class="page-hero"><app-illustration name="card" />
+    <div>
+      <h1>Cartões</h1>
+      <p>Faturas, parcelas e limite de cada cartão em {{ state.monthLabel() }}.</p>
+    </div>
+  </div>
+  <div class="row">
+    <p-button label="Nova compra" icon="pi pi-shopping-cart" severity="secondary" [outlined]="true" (onClick)="openPurchase(null)" [disabled]="!selected()" />
+    <p-button label="Novo cartão" icon="pi pi-plus" (onClick)="openCard(null)" />
+  </div>
+</div>
+
+<div class="card-list rise">
+  @for (c of cards.value() ?? []; track c.id) {
+    <button type="button" class="cc" [class.on]="selected()?.id === c.id" [style.--cc]="c.color" (click)="selectedId.set(c.id)">
+      <div class="between"><span class="bank"><span class="bank-badge">{{ c.bank.charAt(0) }}</span>{{ c.bank }}</span><i class="pi pi-wifi nfc"></i></div>
+      <div class="chip"></div>
+      <div class="name">{{ c.name }}</div>
+      <div class="between foot">
+        <div><div class="l">Fatura</div><b>{{ c.invoice.amount | brl }}</b></div>
+        <div style="text-align: right"><div class="l">Livre</div><b>{{ c.available | brl }}</b></div>
+      </div>
+    </button>
+  } @empty {
+    @if (!cards.isLoading()) {
+      <div class="panel" style="grid-column: 1 / -1">
+        <app-empty-state illustration="card" title="Nenhum cartão cadastrado" text="Cadastre seus cartões para acompanhar faturas, parcelas e limite. Não pedimos número nem CVV.">
+          <p-button label="Novo cartão" icon="pi pi-plus" size="small" (onClick)="openCard(null)" />
+        </app-empty-state>
+      </div>
+    }
+  }
+</div>
+
+@if (selected(); as c) {
+  <div class="cols">
+    <section class="panel">
+      <div class="between">
+        <div>
+          <div class="panel-title">Fatura de {{ state.monthLabel() }} · {{ c.name }}</div>
+          @if (invoice.value(); as inv) {
+            <app-money [value]="inv.summary.amount" size="lg" />
+            <div class="row faint" style="font-size: 0.75rem">
+              <p-tag [value]="status[inv.summary.status].label" [severity]="status[inv.summary.status].severity" />
+              fecha {{ inv.summary.closingDate | date: 'dd/MM' }} · vence {{ inv.summary.dueDate | date: 'dd/MM' }}
+            </div>
+          }
+        </div>
+        <div class="row">
+          @if (invoice.value(); as inv) {
+            @if (inv.summary.amount > 0) {
+              <p-button [label]="inv.summary.status === 'PAGA' ? 'Desfazer pagamento' : 'Marcar como paga'"
+                [icon]="inv.summary.status === 'PAGA' ? 'pi pi-undo' : 'pi pi-check'" size="small"
+                [severity]="inv.summary.status === 'PAGA' ? 'secondary' : 'success'" [outlined]="true" (onClick)="togglePaid()" />
+            }
+          }
+          <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" severity="secondary" (onClick)="openCard(c)" ariaLabel="Editar cartão" />
+          <p-button icon="pi pi-trash" [text]="true" [rounded]="true" severity="danger" (onClick)="archive(c)" ariaLabel="Remover cartão" />
+        </div>
+      </div>
+
+      <div class="items">
+        @for (i of invoice.value()?.items ?? []; track i.purchaseId + i.installmentNumber) {
+          <div class="list-row">
+            <app-category-icon [category]="i.category" />
+            <div class="grow">
+              <div style="font-weight: 600">{{ i.description }}</div>
+              <div class="faint" style="font-size: 0.72rem">{{ i.purchaseDate | date: 'dd/MM/yyyy' }}
+                @if (i.installments > 1) { · parcela {{ i.installmentNumber }}/{{ i.installments }} }
+              </div>
+            </div>
+            <span class="amount">{{ i.amount | brl }}</span>
+            <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" size="small" severity="secondary" (onClick)="editFromItem(i)" ariaLabel="Editar compra" />
+          </div>
+        } @empty {
+          <app-empty-state illustration="empty" title="Fatura vazia" text="Nenhuma compra cai nesta fatura." [compact]="true" />
+        }
+      </div>
+    </section>
+
+    <div class="stack">
+      <section class="panel">
+        <div class="panel-title">Limite</div>
+        <div class="between" style="margin: 0.6rem 0 0.4rem; font-size: 0.8rem">
+          <span class="faint">Usado {{ c.used | brl }}</span><span class="faint">de {{ c.creditLimit | brl }}</span>
+        </div>
+        <p-progressbar [value]="usedPct()" [showValue]="false" [style]="{ height: '8px' }" />
+        <div style="margin-top: 0.6rem; font-size: 0.8rem">Disponível: <b>{{ c.available | brl }}</b></div>
+        <div class="faint" style="font-size: 0.72rem; margin-top: 0.3rem">Fecha dia {{ c.closingDay }} · vence dia {{ c.dueDay }}</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-title">Próximas faturas</div>
+        @for (u of upcoming.value() ?? []; track u.month) {
+          <div class="list-row">
+            <span class="grow">{{ u.month | month }}</span>
+            <p-tag [value]="status[u.status].label" [severity]="status[u.status].severity" />
+            <span class="amount">{{ u.amount | brl }}</span>
+          </div>
+        }
+      </section>
+    </div>
+  </div>
+
+  <section class="panel" style="margin-top: 1rem">
+    <div class="panel-title">Todas as compras deste cartão</div>
+    @for (p of purchases.value() ?? []; track p.id) {
+      <div class="list-row">
+        <div class="grow">
+          <div style="font-weight: 600">{{ p.description }}</div>
+          <div class="faint" style="font-size: 0.72rem">{{ p.purchaseDate | date: 'dd/MM/yyyy' }} · {{ meta[p.category].label }}
+            · {{ p.installments > 1 ? p.installments + 'x' : 'à vista' }} · 1ª fatura {{ p.firstDueMonth | month: 'short' }}</div>
+        </div>
+        <span class="amount">{{ p.totalAmount | brl }}</span>
+        <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" size="small" severity="secondary" (onClick)="openPurchase(p)" ariaLabel="Editar" />
+        <p-button icon="pi pi-trash" [text]="true" [rounded]="true" size="small" severity="danger" (onClick)="removePurchase(p)" ariaLabel="Excluir" />
+      </div>
+    } @empty {
+      <app-empty-state illustration="empty" title="Nenhuma compra registrada" [compact]="true"><p-button label="Nova compra" icon="pi pi-plus" size="small" [outlined]="true" (onClick)="openPurchase(null)" /></app-empty-state>
+    }
+  </section>
+}
+
+<app-card-form [(visible)]="cardFormOpen" [card]="editingCard()" />
+<app-purchase-form [(visible)]="purchaseFormOpen" [purchase]="editingPurchase()" [cardId]="selected()?.id ?? null" />

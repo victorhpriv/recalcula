@@ -1,0 +1,140 @@
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.left, .right-col { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; align-items: start; }
+.span-2 { grid-column: span 2; }
+.span-3 { grid-column: 1 / -1; }
+.right { text-align: right; }
+.ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sub-title { font-size: 0.75rem; font-weight: 700; margin: 1rem 0 0.25rem; }
+.sub-title.upper { text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.65rem; color: var(--app-text-3); }
+
+/* ---- saldo ---- */
+.balance-main { gap: 1.25rem; margin-top: 0.75rem; flex-wrap: wrap; }
+.balance-note { font-size: 0.72rem; }
+.free { color: var(--app-green); font-weight: 600; margin-bottom: 0.15rem; i { font-size: 0.7rem; } }
+.stack-bar {
+  display: flex; gap: 3px; height: 8px; margin: 1.4rem 0 0.8rem;
+  span { border-radius: 99px; transition: width 0.4s ease; }
+}
+.legend {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.5rem; font-size: 0.72rem;
+  .l { color: var(--app-text-3); display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.15rem; }
+  b { font-size: 0.78rem; }
+  .pct { margin-left: 0.25rem; font-size: 0.65rem; }
+}
+.hint-box {
+  margin-top: 1.2rem; padding: 0.8rem 1rem; border-radius: 12px; background: var(--app-primary-soft);
+  color: var(--app-text-2); font-size: 0.8rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+}
+
+/* ---- contas a pagar ---- */
+.days { display: flex; gap: 0.4rem; margin: 1rem 0 0.4rem; overflow-x: auto; padding-bottom: 2px; }
+.day {
+  flex: 1; min-width: 44px; border: 1px solid var(--app-border); background: var(--app-surface); border-radius: 10px;
+  padding: 0.45rem 0 0.35rem; font-weight: 700; font-size: 0.78rem; cursor: pointer; color: var(--app-text);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  .pend { width: 14px; height: 3px; border-radius: 9px; background: var(--app-primary); opacity: 0.6; }
+  .pend.done { background: var(--app-green); }
+  &.on { background: var(--app-primary); border-color: var(--app-primary); color: #fff; .pend { background: #fff; } }
+}
+.bill-list { max-height: 260px; overflow-y: auto; }
+.bill-item { cursor: pointer; &.paid { color: var(--app-text-3); .grow { text-decoration: line-through; } } }
+
+/* ---- gastos por categoria ---- */
+.cat-bar { margin: 1.1rem 0 0.4rem; }
+.cat-ic { width: 28px; height: 28px; border-radius: 9px; color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); display: grid; place-items: center; flex-shrink: 0; i { font-size: 0.75rem; } }
+.pct-col { font-size: 0.7rem; width: 3rem; text-align: right; }
+.scroll-list { max-height: 300px; overflow-y: auto; }
+
+/* ---- cartões ---- */
+.nav-btn {
+  width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--app-border); background: var(--app-surface);
+  color: var(--app-text-2); cursor: pointer; display: grid; place-items: center;
+  &:disabled { opacity: 0.4; cursor: default; }
+  i { font-size: 0.7rem; }
+}
+.card-strip { display: flex; gap: 0.6rem; overflow: hidden; min-height: 120px; }
+.cc {
+  flex: 0 0 86%; border-radius: 14px; padding: 0.8rem 0.9rem; color: #fff; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cc) 85%, white 15%), var(--cc));
+  box-shadow: 0 12px 24px -14px var(--cc);
+  &::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 6px); }
+  &.peek { flex-basis: 40%; }
+  .cc-bank { font-weight: 700; font-size: 0.8rem; }
+  .cc-status { font-size: 0.6rem; background: rgba(255, 255, 255, 0.18); padding: 0.15rem 0.5rem; border-radius: 99px; }
+  .cc-chip { width: 26px; height: 19px; border-radius: 4px; background: linear-gradient(135deg, #f1f1f1, #b9b9b9); margin: 0.7rem 0 0.4rem; }
+  .cc-name { letter-spacing: 0.3em; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; text-align: center; margin-bottom: 0.4rem; }
+  .cc-foot { font-size: 0.72rem; position: relative; z-index: 1; }
+  .cc-l { font-size: 0.55rem; opacity: 0.7; text-transform: uppercase; }
+}
+.next { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 0.4rem; }
+.next-line { position: absolute; left: 0; right: 0; top: 18px; width: 100%; height: 50px; pointer-events: none; z-index: 1; }
+.next-col {
+  background: var(--app-surface-2); border-radius: 10px; padding: 0.5rem 0.4rem; text-align: center; min-height: 96px;
+  display: flex; flex-direction: column; justify-content: space-between; border: 1px solid transparent;
+  &.current { border-color: var(--app-primary); background: linear-gradient(to bottom, transparent 40%, var(--app-primary-soft)); }
+}
+.next-month { font-size: 0.68rem; font-weight: 700; }
+.next-badge { font-size: 0.55rem; color: var(--app-primary); background: var(--app-primary-soft); border-radius: 99px; padding: 0.05rem 0.4rem; align-self: center; }
+.next-amount { font-size: 0.72rem; color: var(--app-text-2); }
+.current .next-amount { color: var(--app-primary); font-weight: 700; }
+
+/* ---- moradia ---- */
+.ref { font-size: 0.72rem; font-weight: 600; margin-top: 0.15rem; .faint { font-weight: 400; } i { font-size: 0.65rem; } }
+.gauge { position: relative; margin-top: 2rem; }
+.gauge-ref {
+  position: absolute; top: -14px; bottom: 14px; width: 2px; background: var(--app-text);
+  span { position: absolute; top: -2px; left: 50%; transform: translate(-50%, -100%); font-size: 0.6rem; color: var(--app-text-3); }
+}
+.gauge-track {
+  height: 12px; border-radius: 4px; background: var(--app-surface-2); overflow: hidden;
+  span { display: block; height: 100%; background: var(--app-green); border-radius: 4px; transition: width 0.4s; }
+  span.bad { background: var(--app-red); }
+}
+.gauge-scale { font-size: 0.6rem; margin-top: 0.3rem; }
+.h-items { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 0.8rem; margin-top: 0.4rem; font-size: 0.72rem; }
+.h-item { display: flex; align-items: center; gap: 0.5rem; .faint { font-size: 0.65rem; } }
+
+
+/* ---- reserva ---- */
+.reserve-banner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.35rem; flex-wrap: wrap; }
+
+@media (max-width: 1280px) {
+  .grid { grid-template-columns: 1fr; }
+  .right-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .legend { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .pair, .right-col { grid-template-columns: 1fr; }
+  .legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ---- primeiros passos ---- */
+.onboarding {
+  display: flex; align-items: center; gap: 1.25rem; margin-bottom: 1rem;
+  background: linear-gradient(120deg, var(--app-primary-soft), var(--app-surface) 70%);
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.ob-title { font-weight: 800; font-size: 1.05rem; }
+.ob-progress { height: 6px; border-radius: 9px; background: var(--app-surface-2); margin: 0.75rem 0; overflow: hidden;
+  span { display: block; height: 100%; background: linear-gradient(90deg, #6d8dff, var(--app-primary)); border-radius: 9px; transition: width 0.5s; } }
+.ob-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.6rem; }
+.ob-step {
+  display: flex; align-items: center; gap: 0.55rem; padding: 0.6rem 0.7rem; border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--app-border); background: var(--app-surface); color: var(--app-text); font: inherit; font-size: 0.78rem;
+  font-weight: 600; text-align: left; transition: border-color 0.15s, transform 0.15s;
+  &:hover:not(:disabled) { border-color: var(--app-primary); transform: translateY(-1px); }
+  &.done { color: var(--app-text-3); cursor: default; text-decoration: line-through; }
+}
+.ob-check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+  background: var(--app-primary-soft); color: var(--app-primary); i { font-size: 0.72rem; } }
+.done .ob-check { background: var(--app-green); color: #fff; }
+@media (max-width: 900px) {
+  .onboarding { flex-direction: column; align-items: stretch; app-illustration { display: none; } }
+  .ob-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -1,0 +1,17 @@
+# Perfil de desenvolvimento local: ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+app:
+  jwt:
+    # Apenas para desenvolvimento. Em produção use a variável JWT_SECRET.
+    secret: ${JWT_SECRET:ZGV2LXNlY3JldC1zb21lbnRlLXBhcmEtZGVzZW52b2x2aW1lbnRvLWxvY2FsLTEyMzQ1Ng==}
+  cookie:
+    secure: false
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+logging:
+  level:
+    br.com.saldo: DEBUG

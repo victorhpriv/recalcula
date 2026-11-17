@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saldo · Saiba quanto sobra antes do mês acabar</title>
+  <meta name="description" content="Saldo é o app de controle financeiro pessoal que mostra quanto sobra no mês: contas fixas, cartões com parcelas, gastos do dia a dia e reserva em um só lugar. Grátis.">
+  <meta name="theme-color" content="#2f5bea">
+  <link rel="canonical" href="https://saldo.app/">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+
+  <!-- Compartilhamento (WhatsApp, LinkedIn, X...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Saldo · Saiba quanto sobra antes do mês acabar">
+  <meta property="og:description" content="Contas, cartões, gastos do dia a dia e reserva em um só lugar, com o saldo previsto sempre atualizado.">
+  <meta property="og:image" content="https://saldo.app/assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Saldo",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web, Android, iOS",
+    "inLanguage": "pt-BR",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "BRL" },
+    "description": "App de controle financeiro pessoal: saldo previsto, contas fixas, cartões com parcelas, gastos do dia a dia e reserva."
+  }
+  </script>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand"><img src="favicon.svg" alt="" width="34" height="34">Saldo</a>
+    <nav class="nav-links" aria-label="Seções">
+      <a href="#recursos">Recursos</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#seguranca">Segurança</a>
+      <a href="#precos">Preço</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" data-app="/login">Entrar</a>
+      <a class="btn btn-primary btn-sm" data-app="/cadastro">Criar conta grátis</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">✨ Controle financeiro pessoal, sem planilha</span>
+        <h1>Saiba quanto sobra <span class="hl">antes do mês acabar.</span></h1>
+        <p class="lead">O Saldo junta suas contas fixas, faturas do cartão, gastos do dia a dia e sua reserva em uma tela só, e calcula na hora quanto vai sobrar no fim do mês.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" data-app="/cadastro">Começar grátis
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
+        </div>
+        <div class="hero-badges">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Grátis no lançamento</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Sem cartão de crédito</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Funciona no celular e no computador</span>
+        </div>
+      </div>
+
+      <div class="showcase reveal">
+        <img class="float-ill a" src="assets/illustrations/wallet.svg" alt="" width="110" height="110">
+        <img class="float-ill b" src="assets/illustrations/piggy.svg" alt="" width="92" height="92">
+        <div class="browser">
+          <div class="browser-bar"><i></i><i></i><i></i><span class="url">saldo.app</span></div>
+          <img src="assets/img/dash-light.webp" width="2160" height="1350" alt="Tela principal do Saldo com saldo previsto, gastos por categoria, cartões, contas a pagar e custo de moradia" fetchpriority="high">
+        </div>
+        <div class="phone"><img src="assets/img/mobile.webp" width="780" height="1688" alt="Saldo no celular"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STRIP ================= -->
+  <section class="strip">
+    <div class="container strip-inner">
+      <div class="strip-item"><img src="assets/illustrations/wallet.svg" alt="" width="44" height="44"><div><b>Saldo previsto</b>quanto sobra no mês</div></div>
+      <div class="strip-item"><img src="assets/illustrations/card.svg" alt="" width="44" height="44"><div><b>Parcelas automáticas</b>faturas calculadas</div></div>
+      <div class="strip-item"><img src="assets/illustrations/calendar.svg" alt="" width="44" height="44"><div><b>Nada esquecido</b>contas por vencimento</div></div>
+      <div class="strip-item"><img src="assets/illustrations/piggy.svg" alt="" width="44" height="44"><div><b>Reserva</b>objetivos com meta</div></div>
+    </div>
+  </section>
+
+  <!-- ================= RECURSOS ================= -->
+  <section class="section" id="recursos">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Recursos</span>
+        <h2>Tudo o que mexe no seu bolso, num lugar só</h2>
+        <p>Feito para quem vive se perguntando "pra onde foi meu dinheiro?" e quer uma resposta em segundos.</p>
+      </div>
+      <div class="features">
+        <article class="feature reveal">
+          <img src="assets/illustrations/wallet.svg" alt="" width="64" height="64">
+          <h3>Saldo previsto</h3>
+          <p>Renda menos contas, faturas e gastos do dia a dia. Você vê quanto vai sobrar antes de o mês acabar, não depois.</p>
+        </article>
+        <article class="feature reveal">
+          <img src="assets/illustrations/card.svg" alt="" width="64" height="64">
+          <h3>Cartões e parcelas</h3>
+          <p>Cadastre a compra uma vez e o Saldo distribui as parcelas nas faturas certas, respeitando fechamento e vencimento.</p>
+        </article>
+        <article class="feature reveal">
+          <img src="assets/illustrations/calendar.svg" alt="" width="64" height="64">
+          <h3>Contas a pagar</h3>
+          <p>Aluguel, luz, internet, assinaturas… Contas fixas se repetem sozinhas e você marca como pagas com um toque.</p>
+        </article>
+        <article class="feature reveal">
+          <img src="assets/illustrations/chart.svg" alt="" width="64" height="64">
+          <h3>Para onde vai o dinheiro</h3>
+          <p>Gastos agrupados por categoria, com cores e percentuais. Descubra em segundos onde dá para economizar.</p>
+        </article>
+        <article class="feature reveal">
+          <img src="assets/illustrations/house.svg" alt="" width="64" height="64">
+          <h3>Quanto custa morar</h3>
+          <p>Compare seus gastos de moradia com a referência de 30% da renda e saiba se está dentro do saudável.</p>
+        </article>
+        <article class="feature reveal">
+          <img src="assets/illustrations/piggy.svg" alt="" width="64" height="64">
+          <h3>Reserva e objetivos</h3>
+          <p>Reserva de emergência, viagem, carro: crie metas, registre aportes e acompanhe o progresso.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= COMO FUNCIONA ================= -->
+  <section class="section" id="como-funciona" style="padding-top: 0">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Como funciona</span>
+        <h2>Pronto em 5 minutos</h2>
+        <p>Sem planilha, sem fórmula e sem conectar sua conta do banco.</p>
+      </div>
+      <div class="steps">
+        <div class="step reveal">
+          <img src="assets/illustrations/money.svg" alt="" width="58" height="58">
+          <h3>Cadastre sua renda</h3>
+          <p>Salário e outras entradas, fixas ou de um mês só.</p>
+        </div>
+        <div class="step reveal">
+          <img src="assets/illustrations/receipt.svg" alt="" width="58" height="58">
+          <h3>Adicione contas e cartões</h3>
+          <p>As contas fixas se repetem sozinhas; as parcelas caem nas faturas certas.</p>
+        </div>
+        <div class="step reveal">
+          <img src="assets/illustrations/rocket.svg" alt="" width="58" height="58">
+          <h3>Acompanhe o mês</h3>
+          <p>Registre os gastos do dia a dia e veja o saldo previsto se atualizar na hora.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TEMA ESCURO ================= -->
+  <section class="section dark-band">
+    <div class="container split">
+      <div class="reveal">
+        <span class="eyebrow">Do seu jeito</span>
+        <h2>Bonito de dia, confortável à noite</h2>
+        <p class="lead">Tema claro e escuro, layout pensado para o celular e instalação direto da tela inicial, como um app.</p>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".2" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Instale no celular</b> pelo navegador, sem loja de apps.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".2" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Lançamento rápido</b> pelo botão Adicionar, de qualquer tela.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".2" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Navegue pelos meses</b> e planeje os próximos com antecedência.</span></li>
+        </ul>
+      </div>
+      <div class="shot reveal"><img src="assets/img/dash-dark.webp" width="2160" height="1350" alt="Saldo no tema escuro" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- ================= SEGURANÇA ================= -->
+  <section class="section" id="seguranca">
+    <div class="container split">
+      <div class="reveal" style="display: grid; place-items: center">
+        <img src="assets/illustrations/piggy.svg" alt="" width="260" height="260" style="width: min(260px, 70%)">
+      </div>
+      <div class="reveal">
+        <span class="eyebrow">Segurança e privacidade</span>
+        <h2>Seus dados são só seus</h2>
+        <p class="lead">Levamos privacidade a sério e seguimos a LGPD.</p>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".15" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Não pedimos senha do banco</b> nem número, validade ou CVV do cartão.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".15" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Conexão criptografada</b> e senhas armazenadas com hash forte (BCrypt).</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".15" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Não vendemos seus dados</b> nem mostramos anúncios.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" opacity=".15" fill="currentColor" stroke="none"/><path d="M7.5 12.5l3 3 6-6.5"/></svg><span><b>Você no controle:</b> exporte tudo ou exclua sua conta quando quiser.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PREÇO ================= -->
+  <section class="section" id="precos" style="padding-top: 0">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Preço</span>
+        <h2>Grátis durante o lançamento</h2>
+        <p>Use todos os recursos sem pagar nada. Quem entrar agora ajuda a construir o Saldo.</p>
+      </div>
+      <div class="pricing">
+        <div class="plan featured reveal">
+          <h3>Saldo</h3>
+          <div class="price">R$ 0 <small>/mês</small></div>
+          <p class="desc">Tudo o que você precisa para organizar o mês.</p>
+          <ul class="checks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Saldo previsto e gastos por categoria</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Cartões, faturas e parcelas ilimitados</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Contas fixas e avulsas</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Reserva e objetivos</li>
+          </ul>
+          <a class="btn btn-primary" data-app="/cadastro">Criar conta grátis</a>
+        </div>
+        <div class="plan soon reveal">
+          <h3>Em breve</h3>
+          <div class="price" style="font-size: 1.6rem; margin: 1rem 0 0.6rem">Novidades a caminho</div>
+          <p class="desc">O que estamos construindo para as próximas versões.</p>
+          <ul class="checks">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg>Importação de extrato (OFX/CSV)</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg>Lembretes de vencimento</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg>Metas de gasto por categoria</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/></svg>Contas compartilhadas</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="section" id="duvidas" style="padding-top: 0">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Dúvidas</span>
+        <h2>Perguntas frequentes</h2>
+      </div>
+      <div class="faq reveal">
+        <details>
+          <summary>O Saldo é gratuito?</summary>
+          <p>Sim. Durante o lançamento todos os recursos são gratuitos. Se no futuro houver um plano pago, ele trará recursos extras e você será avisado com antecedência.</p>
+        </details>
+        <details>
+          <summary>Preciso conectar minha conta do banco?</summary>
+          <p>Não. Você mesmo cadastra rendas, contas e compras. Não pedimos senha do banco nem dados do cartão como número ou CVV.</p>
+        </details>
+        <details>
+          <summary>Como o Saldo calcula as parcelas do cartão?</summary>
+          <p>Você informa o dia de fechamento e de vencimento do cartão. Compras antes do fechamento entram na fatura do ciclo atual; a partir do fechamento, na próxima. Cada parcela vai para o mês certo automaticamente.</p>
+        </details>
+        <details>
+          <summary>Funciona no celular?</summary>
+          <p>Sim. O Saldo funciona no navegador do celular e do computador, e pode ser instalado na tela inicial como um aplicativo.</p>
+        </details>
+        <details>
+          <summary>Posso exportar ou apagar meus dados?</summary>
+          <p>Pode. Em "Minha conta" você baixa todos os seus dados em um arquivo ou exclui a conta definitivamente, a qualquer momento.</p>
+        </details>
+        <details>
+          <summary>O Saldo dá recomendações de investimento?</summary>
+          <p>Não. O Saldo é uma ferramenta de organização financeira pessoal e não oferece consultoria financeira ou de investimentos.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="section" style="padding-top: 0">
+    <div class="container">
+      <div class="cta reveal">
+        <img class="ill l" src="assets/illustrations/card.svg" alt="" width="120" height="120">
+        <img class="ill r" src="assets/illustrations/chart.svg" alt="" width="120" height="120">
+        <h2>Comece o próximo mês no controle</h2>
+        <p>Crie sua conta em menos de um minuto e descubra quanto vai sobrar.</p>
+        <a class="btn btn-primary" data-app="/cadastro">Criar conta grátis</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div style="max-width: 320px">
+        <a href="#" class="brand"><img src="favicon.svg" alt="" width="34" height="34">Saldo</a>
+        <p style="margin-top: 0.8rem">Controle financeiro pessoal simples, bonito e privado.</p>
+      </div>
+      <div class="footer-links">
+        <div><b>Produto</b><a href="#recursos">Recursos</a><a href="#precos">Preço</a><a href="#duvidas">Dúvidas</a></div>
+        <div><b>Conta</b><a data-app="/login">Entrar</a><a data-app="/cadastro">Criar conta</a></div>
+        <div><b>Legal</b><a href="termos.html">Termos de Uso</a><a href="privacidade.html">Privacidade</a><a href="mailto:contato@saldo.app">Contato</a></div>
+      </div>
+    </div>
+    <div class="copy">© <span id="year">2026</span> Saldo. O Saldo não é instituição financeira e não oferece consultoria de investimentos.</div>
+  </div>
+</footer>
+
+<script src="assets/config.js"></script>
+<script src="assets/site.js" defer></script>
+</body>
+</html>
