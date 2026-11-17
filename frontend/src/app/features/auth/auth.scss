@@ -1,0 +1,54 @@
+:host {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(150deg, #5b86ff 0%, #2f5bea 45%, #3a2fb8 100%);
+  color: #fff;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+    background-size: 22px 22px;
+    pointer-events: none;
+  }
+
+}
+
+.form-side {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: var(--app-surface);
+}
+
+.box {
+  width: 100%;
+  max-width: 380px;
+
+  h2 { font-size: 1.6rem; margin-bottom: 0.35rem; }
+  .sub { color: var(--app-text-2); margin: 0 0 1.75rem; }
+  .field { margin-bottom: 1rem; }
+  label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--app-text-2); margin-bottom: 0.35rem; }
+  .error { font-size: 0.72rem; color: var(--app-red); margin-top: 0.3rem; }
+  .forgot { text-align: right; margin-top: 0.4rem; font-size: 0.78rem; }
+  .terms { display: flex; gap: 0.6rem; align-items: flex-start; label { font-weight: 400; font-size: 0.78rem; line-height: 1.45; margin: 0; } }
+  p-message { display: block; margin-bottom: 0.75rem; }
+  img { margin-bottom: 0.75rem; }
+  .alt { text-align: center; margin-top: 1.5rem; font-size: 0.85rem; color: var(--app-text-2); }
+}
+
+@media (max-width: 860px) {
+  :host { grid-template-columns: 1fr; }
+  .hero { display: none; }
+}

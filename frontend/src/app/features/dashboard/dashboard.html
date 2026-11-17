@@ -1,0 +1,285 @@
+@if (data.isLoading() && !data.hasValue()) {
+  <div class="grid">
+    <p-skeleton class="span-2" height="190px" borderRadius="18px" />
+    <p-skeleton height="190px" borderRadius="18px" />
+    <p-skeleton height="360px" borderRadius="18px" />
+    <p-skeleton height="360px" borderRadius="18px" />
+    <p-skeleton height="360px" borderRadius="18px" />
+  </div>
+} @else if (data.error()) {
+  <div class="panel">
+    <app-empty-state illustration="empty" title="Não foi possível carregar a visão geral" text="Verifique sua conexão e tente novamente.">
+      <p-button label="Tentar novamente" size="small" icon="pi pi-refresh" (onClick)="data.reload()" />
+    </app-empty-state>
+  </div>
+} @else if (data.value(); as d) {
+  @if (onboarding(); as ob) {
+    <section class="panel onboarding">
+      <app-illustration name="rocket" [size]="84" class="float" />
+      <div class="grow">
+        <div class="between">
+          <div>
+            <div class="ob-title">Bem-vindo, {{ firstName() }}! Vamos montar seu mês</div>
+            <div class="panel-sub">{{ ob.done }} de {{ ob.steps.length }} passos concluídos</div>
+          </div>
+          <p-button icon="pi pi-times" [text]="true" [rounded]="true" severity="secondary" (onClick)="dismissOnboarding()" ariaLabel="Ocultar" />
+        </div>
+        <div class="ob-progress"><span [style.width.%]="(ob.done / ob.steps.length) * 100"></span></div>
+        <div class="ob-steps">
+          @for (step of ob.steps; track step.label) {
+            <button type="button" class="ob-step" [class.done]="step.done" (click)="step.action()" [disabled]="step.done">
+              <span class="ob-check"><i [class]="step.done ? 'pi pi-check' : step.icon"></i></span>
+              <span>{{ step.label }}</span>
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+  }
+  <div class="grid">
+    <div class="left rise">
+    <!-- ================= SALDO PREVISTO ================= -->
+    <section class="panel balance">
+      <div class="between">
+        <div>
+          <div class="panel-title">Saldo previsto</div>
+          <div class="row balance-main">
+            <app-money [value]="d.balance.projected" size="xl" />
+            <div class="balance-note">
+              <div class="free" [class.text-red]="d.balance.projected < 0">
+                <i class="pi" [class.pi-arrow-up-right]="d.balance.projected >= 0" [class.pi-arrow-down-right]="d.balance.projected < 0"></i>
+                {{ d.balance.freePercent | number: '1.0-1' }}% da renda livre
+              </div>
+              <div class="faint">valor estimado após pagar todas as contas</div>
+            </div>
+          </div>
+        </div>
+        <app-illustration name="wallet" [size]="76" />
+      </div>
+
+      @if (d.balance.income > 0) {
+        <div class="stack-bar">
+          @for (s of balanceBar(); track s.key) {
+            @if (s.pct > 0) { <span [style.width.%]="s.pct" [style.background]="s.color" [pTooltip]="s.label"></span> }
+          }
+        </div>
+        <div class="legend">
+          <div><div class="l">Renda</div><b>{{ d.balance.income | brl }}</b></div>
+          @for (s of balanceBar(); track s.key) {
+            <div>
+              <div class="l"><span class="dot" [style.background]="s.color"></span>{{ s.label }}</div>
+              <b [class.text-green]="s.key === 'free'">{{ s.key === 'free' ? '=' : '−' }} {{ s.value | brl }}</b>
+              <span class="faint pct">{{ s.pct.toFixed(0) }}%</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="hint-box">
+          <i class="pi pi-info-circle"></i>
+          Cadastre sua renda para calcular quanto sobra no mês.
+          <a routerLink="/renda">Adicionar renda</a>
+        </div>
+      }
+    </section>
+
+      <div class="pair">
+    <!-- ================= GASTOS POR CATEGORIA ================= -->
+    <section class="panel spending">
+      <div class="between">
+        <div>
+          <div class="panel-title">Para onde vai o dinheiro</div>
+          <div class="panel-sub" style="margin-top: 0.6rem">Total de gastos no mês</div>
+          <app-money [value]="d.spending.total" size="lg" />
+          @if (topCategory(); as t) {
+            <div class="panel-sub">Maior gasto: <b class="muted">{{ t.label }}</b> ({{ t.percent | number: '1.0-1' }}%)</div>
+          }
+        </div>
+        <app-illustration name="chart" />
+      </div>
+
+      @if (spending().length) {
+        <div class="stack-bar cat-bar">
+          @for (c of spending(); track c.key) {
+            <span [style.width.%]="c.percent" [style.background]="c.color" [pTooltip]="c.label + ' · ' + (c.percent | number: '1.0-1') + '%'"></span>
+          }
+        </div>
+        <div class="scroll-list">
+          @for (c of spending(); track c.key) {
+            <div class="list-row">
+              <span class="cat-ic" [style.--c]="c.color"><i [class]="c.icon"></i></span>
+              <span class="grow ellipsis">{{ c.label }}</span>
+              <span class="faint pct-col">{{ c.percent | number: '1.0-1' }}%</span>
+              <span class="amount">{{ c.amount | brl }}</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <app-empty-state illustration="empty" title="Nada gasto ainda" text="Registre contas, compras no cartão ou gastos do dia a dia para ver para onde vai o seu dinheiro." [compact]="true" />
+      }
+    </section>
+
+    <!-- ================= CARTÕES ================= -->
+    <section class="panel cards">
+      <div class="between">
+        <div>
+          <div class="panel-title">Cartões</div>
+          <div class="panel-sub" style="margin-top: 0.6rem">Fatura de {{ monthName() }}</div>
+          <app-money [value]="d.cards.totalInvoices" size="lg" />
+        </div>
+        <app-illustration name="card" />
+      </div>
+
+      <div class="between" style="margin: 0.8rem 0 0.6rem">
+        <p-button label="Ver fatura" size="small" severity="secondary" [outlined]="true" (onClick)="openInvoices()" />
+        @if (d.cards.cards.length > 1) {
+          <div class="row">
+            <button type="button" class="nav-btn" (click)="shiftCards(-1)" [disabled]="cardIndex() === 0" aria-label="Anterior"><i class="pi pi-angle-left"></i></button>
+            <button type="button" class="nav-btn" (click)="shiftCards(1)" [disabled]="cardIndex() >= d.cards.cards.length - 1" aria-label="Próximo"><i class="pi pi-angle-right"></i></button>
+          </div>
+        }
+      </div>
+
+      <div class="card-strip">
+        @for (c of visibleCards(); track c.id; let first = $first) {
+          <div class="cc" [class.peek]="!first" [style.--cc]="c.color">
+            <div class="between">
+              <span class="cc-bank">{{ c.bank }}</span>
+              <span class="cc-status">{{ invoiceStatus[c.invoice.status].label }}</span>
+            </div>
+            <div class="cc-chip"></div>
+            <div class="cc-name">{{ c.name }}</div>
+            <div class="between cc-foot">
+              <div><div class="cc-l">Vence</div><b>{{ c.invoice.dueDate.slice(8, 10) }}/{{ c.invoice.dueDate.slice(5, 7) }}</b></div>
+              <div class="right"><div class="cc-l">Limite livre</div><b>{{ c.available | brl }}</b></div>
+            </div>
+          </div>
+        } @empty {
+          <app-empty-state style="width: 100%" illustration="empty" title="Nenhum cartão" [compact]="true"><p-button label="Adicionar cartão" size="small" [outlined]="true" routerLink="/cartoes" /></app-empty-state>
+        }
+      </div>
+
+      @if (d.cards.cards.length) {
+        <div class="sub-title upper">Próximas faturas</div>
+        <div class="next">
+          <svg viewBox="0 0 300 50" preserveAspectRatio="none" class="next-line" aria-hidden="true">
+            <polyline [attr.points]="nextChartPath()" fill="none" stroke="var(--app-text-3)" stroke-width="1" stroke-dasharray="3 3" />
+            @for (p of nextChart(); track p.month) {
+              <circle [attr.cx]="p.x" [attr.cy]="p.y" r="3" fill="var(--app-surface)" stroke="var(--app-primary)" stroke-width="1.5" />
+            }
+          </svg>
+          @for (n of d.cards.next; track n.month; let first = $first) {
+            <div class="next-col" [class.current]="first">
+              <div class="next-month">{{ n.month | month: 'short' }}</div>
+              @if (first) { <div class="next-badge">Atual</div> }
+              <div class="next-amount">{{ n.amount | brl }}</div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+      </div>
+    </div>
+    <div class="right-col rise">
+    <!-- ================= CONTAS A PAGAR ================= -->
+    <section class="panel bills">
+      <div class="between">
+        <div>
+          <div class="panel-title">Contas a pagar
+            @if (d.upcoming.dueDays.length) { <span class="faint">· dia {{ d.upcoming.dueDays[0] }}</span> }
+          </div>
+          <app-money [value]="d.upcoming.totalPending" size="lg" />
+          <div class="panel-sub">
+            @if (daysToNext() !== null) {
+              {{ dueLabel() }} ·
+            }
+            {{ d.upcoming.paidCount }} de {{ d.upcoming.totalCount }} pagas
+          </div>
+        </div>
+        <app-illustration name="calendar" />
+      </div>
+
+      @if (d.upcoming.dueDays.length) {
+        <div class="days">
+          @for (day of d.upcoming.dueDays; track day) {
+            <button type="button" class="day" [class.on]="dayFilter() === day" (click)="dayFilter.set(dayFilter() === day ? null : day)">
+              {{ day.toString().padStart(2, '0') }}
+              <span class="pend" [class.done]="!unpaidDays().has(day)"></span>
+            </button>
+          }
+        </div>
+      }
+
+      <div class="bill-list">
+        @for (item of filteredItems(); track item.kind + item.id) {
+          <label class="list-row bill-item" [class.paid]="item.paid">
+            <p-checkbox [binary]="true" [ngModel]="item.paid" (onChange)="toggleItem(item)" />
+            <span class="grow ellipsis">{{ item.description }}</span>
+            @if (item.kind === 'INVOICE') { <i class="pi pi-credit-card faint" style="font-size: 0.7rem"></i> }
+            <span class="amount">{{ item.amount | brl }}</span>
+          </label>
+        } @empty {
+          <app-empty-state illustration="receipt" title="Nenhuma conta neste mês" [compact]="true"><p-button label="Adicionar conta" size="small" [outlined]="true" (onClick)="state.openQuickAdd('bill')" /></app-empty-state>
+        }
+      </div>
+    </section>
+
+    <!-- ================= MORADIA ================= -->
+    <section class="panel housing">
+      @if (housingView(); as h) {
+        <div class="between">
+          <div>
+            <div class="panel-title">Moradia</div>
+            <div class="panel-sub" style="margin-top: 0.6rem">Quanto você gasta pra morar</div>
+            <app-money [value]="h.amount" size="lg" />
+            @if (h.hasIncome) {
+              <div class="ref" [class.text-green]="h.ok" [class.text-red]="!h.ok">
+                <i class="pi" [class.pi-check]="h.ok" [class.pi-exclamation-triangle]="!h.ok"></i>
+                {{ h.percent | number: '1.0-1' }}% da renda <span class="faint">referência: até {{ h.reference }}%</span>
+              </div>
+            } @else {
+              <div class="ref faint">Cadastre sua renda para ver o percentual</div>
+            }
+          </div>
+          <app-illustration name="house" />
+        </div>
+
+        <div class="gauge">
+          <div class="gauge-ref" [style.left.%]="h.refPct"><span>{{ h.reference }}%</span></div>
+          <div class="gauge-track"><span [style.width.%]="h.barPct" [class.bad]="!h.ok"></span></div>
+          <div class="between faint gauge-scale"><span>0%</span><span>60% da renda</span></div>
+        </div>
+
+        <div class="sub-title">O que entra na conta</div>
+        <div class="h-items">
+          @for (i of h.items; track i.description) {
+            <div class="h-item">
+              <app-category-icon [category]="i.category" [size]="30" />
+              <div><div class="faint">{{ i.description }}</div><b>{{ i.amount | brl }}</b></div>
+            </div>
+          } @empty {
+            <div class="empty" style="grid-column: 1 / -1">Marque contas como <b>custo de moradia</b> em <a routerLink="/contas">Contas</a>.</div>
+          }
+        </div>
+      }
+    </section>
+
+    </div>
+    <!-- ================= RESERVA ================= -->
+    <section class="panel span-3 reserve-banner">
+      <div class="row">
+        <div>
+          <div class="panel-title">Reserva</div>
+          <div class="row" style="gap: 0.5rem">
+            <app-money [value]="d.reserveTotal" size="md" />
+            <span class="faint">guardados</span>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <p-button label="Ver reserva" icon="pi pi-arrow-right" iconPos="right" [text]="true" routerLink="/reserva" />
+        <app-illustration name="piggy" [size]="56" />
+      </div>
+    </section>
+  </div>
+}

@@ -1,0 +1,91 @@
+<p-toast position="top-right" />
+<p-confirmdialog [style]="{ width: '420px' }" [breakpoints]="{ '640px': '92vw' }" />
+
+<div class="layout" [class.mobile-open]="mobileOpen()">
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="brand-logo" src="favicon.svg" width="34" height="34" alt="" />
+      <div>
+        <div class="brand-name">Saldo</div>
+        <div class="brand-sub">Finanças pessoais</div>
+      </div>
+    </div>
+
+    <nav (click)="mobileOpen.set(false)">
+      <div class="nav-title">Menu</div>
+      @for (item of menu; track item.link) {
+        <a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.link === '/' }" class="nav-item">
+          <i [class]="item.icon"></i><span>{{ item.label }}</span>
+        </a>
+      }
+      <div class="nav-title">Ajustes</div>
+      @for (item of settings; track item.link) {
+        <a [routerLink]="item.link" routerLinkActive="active" class="nav-item">
+          <i [class]="item.icon"></i><span>{{ item.label }}</span>
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="theme-row">
+        <span><i class="pi pi-palette"></i> Tema</span>
+        <div class="theme-toggle" role="group" aria-label="Tema">
+          <button type="button" [class.on]="theme.theme() === 'light'" (click)="theme.set('light')" aria-label="Tema claro"><i class="pi pi-sun"></i></button>
+          <button type="button" [class.on]="theme.theme() === 'dark'" (click)="theme.set('dark')" aria-label="Tema escuro"><i class="pi pi-moon"></i></button>
+        </div>
+      </div>
+      <button type="button" class="user-card" (click)="userMenu.toggle($event)">
+        <app-avatar [name]="auth.user()?.name ?? ''" />
+        <div class="grow" style="min-width: 0">
+          <div class="user-name">{{ auth.user()?.name }}</div>
+          <div class="user-email">{{ auth.user()?.email }}</div>
+        </div>
+        <i class="pi pi-angle-up faint"></i>
+      </button>
+      <p-menu #userMenu [model]="userItems" [popup]="true" appendTo="body" />
+    </div>
+  </aside>
+
+  <div class="backdrop" (click)="mobileOpen.set(false)"></div>
+
+  <main class="main">
+    <header class="topbar panel">
+      <button type="button" class="icon-btn hamburger" (click)="mobileOpen.set(true)" aria-label="Abrir menu"><i class="pi pi-bars"></i></button>
+      <button type="button" class="icon-btn" (click)="state.previousMonth()" aria-label="Mês anterior"><i class="pi pi-angle-left"></i></button>
+      <button type="button" class="icon-btn" (click)="state.nextMonth()" aria-label="Próximo mês"><i class="pi pi-angle-right"></i></button>
+      <button type="button" class="month-btn" (click)="monthPop.toggle($event)">
+        <span class="m-name">{{ state.monthLabel().split(' ')[0] }}</span>
+        <span class="m-year">{{ state.monthLabel().split(' ')[1] }}</span>
+        <i class="pi pi-angle-down"></i>
+      </button>
+      <p-popover #monthPop>
+        <p-datepicker [ngModel]="monthDate()" (ngModelChange)="pickMonth($event, monthPop)" view="month" [inline]="true" />
+        <div class="today-link"><p-button label="Mês atual" [text]="true" size="small" (onClick)="state.goToCurrentMonth(); monthPop.hide()" /></div>
+      </p-popover>
+
+      <div class="grow"></div>
+      <p-splitbutton label="Adicionar" icon="pi pi-plus" [model]="addItems" (onClick)="add('cash')" appendTo="body" />
+    </header>
+
+    @if (auth.user() && !auth.user()!.emailVerified) {
+      <div class="verify-banner">
+        <i class="pi pi-envelope"></i>
+        <span class="grow">Confirme seu e-mail <b>{{ auth.user()!.email }}</b> para proteger sua conta e poder recuperar a senha.</span>
+        @if (resent()) {
+          <span class="sent"><i class="pi pi-check"></i> E-mail enviado</span>
+        } @else {
+          <p-button label="Reenviar e-mail" size="small" [text]="true" (onClick)="resendVerification()" />
+        }
+      </div>
+    }
+
+    <section class="content">
+      <router-outlet />
+    </section>
+  </main>
+</div>
+
+<app-cash-entry-form [visible]="cashOpen()" (visibleChange)="closeQuickAdd($event)" />
+<app-bill-form [visible]="billOpen()" (visibleChange)="closeQuickAdd($event)" />
+<app-purchase-form [visible]="purchaseOpen()" (visibleChange)="closeQuickAdd($event)" />
+<app-income-form [visible]="incomeOpen()" (visibleChange)="closeQuickAdd($event)" />

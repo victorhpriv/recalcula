@@ -1,0 +1,25 @@
+import { Translation } from 'primeng/api';
+
+export const PT_BR_TRANSLATION: Translation = {
+  accept: 'Sim',
+  reject: 'Não',
+  cancel: 'Cancelar',
+  clear: 'Limpar',
+  apply: 'Aplicar',
+  choose: 'Escolher',
+  dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+  dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+  dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+  monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+  monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+  today: 'Hoje',
+  weekHeader: 'Sem',
+  firstDayOfWeek: 0,
+  dateFormat: 'dd/mm/yy',
+  emptyMessage: 'Nenhum resultado',
+  emptyFilterMessage: 'Nenhum resultado',
+  passwordPrompt: 'Digite uma senha',
+  weak: 'Fraca',
+  medium: 'Média',
+  strong: 'Forte',
+};

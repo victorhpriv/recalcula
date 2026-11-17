@@ -1,0 +1,24 @@
+.card-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.cc {
+  border: none; text-align: left; cursor: pointer; color: #fff; border-radius: 16px; padding: 1rem 1.1rem; font: inherit;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cc) 82%, white 18%), var(--cc));
+  box-shadow: 0 14px 28px -18px var(--cc); outline: 3px solid transparent; outline-offset: 3px; transition: transform 0.15s;
+  &:hover { transform: translateY(-2px); }
+  &.on { outline-color: var(--app-primary); }
+  .bank { font-weight: 700; font-size: 0.85rem; }
+  .pill { font-size: 0.62rem; background: rgba(255, 255, 255, 0.2); padding: 0.15rem 0.5rem; border-radius: 99px; i { font-size: 0.6rem; } }
+  .name { letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; font-size: 0.72rem; margin: 0.6rem 0 1rem; }
+  .bank { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .bank-badge { width: 22px; height: 22px; border-radius: 7px; background: rgba(255, 255, 255, 0.2); display: grid; place-items: center; font-size: 0.7rem; }
+  .nfc { transform: rotate(90deg); opacity: 0.8; font-size: 0.85rem; }
+  .chip { width: 30px; height: 22px; border-radius: 5px; margin-top: 0.9rem; background: linear-gradient(135deg, #fff3c4, #d9b44a); position: relative;
+    &::after { content: ''; position: absolute; inset: 5px 9px; border: 1px solid rgba(120, 90, 20, 0.45); border-radius: 2px; } }
+  position: relative; overflow: hidden;
+  &::before { content: ''; position: absolute; width: 180px; height: 180px; border-radius: 50%; right: -60px; top: -80px; background: rgba(255, 255, 255, 0.08); }
+  .foot { font-size: 0.8rem; }
+  .l { font-size: 0.58rem; opacity: 0.75; text-transform: uppercase; }
+}
+.cols { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: start; }
+.items { margin-top: 1rem; }
+.ic { width: 32px; height: 32px; border-radius: 10px; background: var(--app-primary-soft); color: var(--app-primary); display: grid; place-items: center; flex-shrink: 0; i { font-size: 0.8rem; } }
+@media (max-width: 960px) { .cols { grid-template-columns: 1fr; } }

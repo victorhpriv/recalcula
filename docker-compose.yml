@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: saldo
+      POSTGRES_USER: saldo
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Defina DB_PASSWORD no .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U saldo -d saldo"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/saldo
+      DB_USER: saldo
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Defina JWT_SECRET no .env}
+      CORS_ORIGINS: http://localhost:8081
+      COOKIE_SECURE: "false" # true em produção (HTTPS)
+      FRONTEND_URL: http://localhost:8081
+      # E-mail (opcional). Sem MAIL_HOST, os links aparecem no log da API.
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-Saldo <nao-responda@saldo.app>}
+    expose:
+      - "8080"
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    ports:
+      - "8081:80"
+
+  landing:
+    build: ./landing
+    ports:
+      - "8080:80"
+
+volumes:
+  pgdata:
