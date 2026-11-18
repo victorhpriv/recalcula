@@ -1,28 +1,15 @@
 :host {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   min-height: 100vh;
 }
 
 .hero {
-  background: linear-gradient(150deg, #5b86ff 0%, #2f5bea 45%, #3a2fb8 100%);
-  color: #fff;
-  padding: 3rem;
+  background: #0c2a21;
+  color: #ecf5f0;
+  padding: 2.75rem 3.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
-    background-size: 22px 22px;
-    pointer-events: none;
-  }
-
 }
 
 .form-side {
@@ -51,4 +38,11 @@
 @media (max-width: 860px) {
   :host { grid-template-columns: 1fr; }
   .hero { display: none; }
+}
+
+.status-ic {
+  width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; margin-bottom: 1rem;
+  border: 1px solid var(--app-border); color: var(--app-text-2); background: var(--app-surface-2);
+  &.ok { color: var(--app-green); background: var(--app-green-soft); border-color: transparent; }
+  &.bad { color: var(--app-red); }
 }

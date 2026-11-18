@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../core/api/api.service';
 import { Card, UpcomingItem } from '../../core/api/models';
 import { AppState } from '../../core/state/app-state.service';
-import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { CategoryIcon } from '../../shared/ui/category-icon';
 import { AuthService } from '../../core/auth/auth.service';
@@ -47,7 +46,7 @@ function writeFlag(key: string): void {
   selector: 'app-dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [LucideAngularModule, RouterLink, FormsModule, DecimalPipe, ButtonModule, CheckboxModule, SkeletonModule, TagModule, TooltipModule, Money,
-    Illustration, EmptyState, CategoryIcon, BrlPipe, MonthPipe],
+    EmptyState, CategoryIcon, BrlPipe, MonthPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -66,18 +65,71 @@ export class DashboardPage {
   protected readonly invoiceStatus = INVOICE_STATUS;
   protected readonly monthName = computed(() => monthName(this.state.month()).toLowerCase());
 
-  // ----- saldo -----
-  protected readonly balanceBar = computed(() => {
+  // ----- curva do saldo no mês -----
+  /**
+   * Projeção diária: começa com a renda do mês e desce a cada vencimento (contas e faturas);
+   * os gastos do dia a dia são distribuídos ao longo do mês. O último ponto é o saldo previsto.
+   */
+  protected readonly curve = computed(() => {
+    const d = this.data.value();
+    if (!d || d.balance.income <= 0) return null;
+    const [y, m] = this.state.month().split('-').map(Number);
+    const days = new Date(y, m, 0).getDate();
+    const W = 640;
+    const H = 180;
+    const PAD_TOP = 14;
+    const PAD_BOTTOM = 18;
+
+    const byDay = new Map<number, number>();
+    for (const it of d.upcoming.items) byDay.set(it.dueDay, (byDay.get(it.dueDay) ?? 0) + it.amount);
+    const dailyRate = d.balance.daily / days;
+
+    const values: number[] = [d.balance.income];
+    let v = d.balance.income;
+    const steps: { day: number; before: number; after: number }[] = [];
+    for (let day = 1; day <= days; day++) {
+      v -= dailyRate;
+      const before = v;
+      v -= byDay.get(day) ?? 0;
+      steps.push({ day, before, after: v });
+      values.push(before, v);
+    }
+    const max = d.balance.income;
+    const min = Math.min(0, ...values);
+    const x = (day: number) => (day / days) * W;
+    const yv = (val: number) => PAD_TOP + (1 - (val - min) / (max - min || 1)) * (H - PAD_TOP - PAD_BOTTOM);
+
+    let path = `M0,${yv(max).toFixed(1)}`;
+    for (const st of steps) {
+      path += ` L${x(st.day).toFixed(1)},${yv(st.before).toFixed(1)}`;
+      if (st.after !== st.before) path += ` L${x(st.day).toFixed(1)},${yv(st.after).toFixed(1)}`;
+    }
+    const area = `${path} L${W},${H} L0,${H} Z`;
+    const markers = [...byDay.entries()]
+      .filter(([day]) => day >= 1 && day <= days)
+      .map(([day, amount]) => {
+        const st = steps[day - 1];
+        return { day, amount, x: x(day), y: yv(st.after) };
+      });
+    const now = new Date();
+    const isCurrent = now.getFullYear() === y && now.getMonth() + 1 === m;
+    return {
+      W, H, path, area, markers, days,
+      zeroY: min < 0 ? yv(0) : null,
+      todayX: isCurrent ? x(now.getDate()) : null,
+      end: { x: W, y: yv(v), value: v },
+      negative: v < 0,
+    };
+  });
+
+  protected readonly expenses = computed(() => {
     const b = this.data.value()?.balance;
-    if (!b || b.income <= 0) return [];
-    const segs = [
-      { key: 'bills', label: 'Contas', value: b.bills, color: 'var(--app-navy)' },
-      { key: 'cards', label: 'Cartões', value: b.cards, color: 'var(--app-primary)' },
-      { key: 'daily', label: 'Dia a dia', value: b.daily, color: '#9db4ff' },
-      { key: 'free', label: 'Sobra', value: Math.max(b.projected, 0), color: 'var(--app-green)' },
+    if (!b) return [];
+    return [
+      { label: 'Contas', value: b.bills },
+      { label: 'Cartões', value: b.cards },
+      { label: 'Dia a dia', value: b.daily },
     ];
-    const total = Math.max(b.income, segs.reduce((s, x) => s + x.value, 0));
-    return segs.map((s) => ({ ...s, pct: (s.value / total) * 100 }));
   });
 
   // ----- gastos por categoria -----
@@ -91,7 +143,7 @@ export class DashboardPage {
     if (rest.length) {
       const amount = rest.reduce((t, c) => t + c.amount, 0);
       const percent = rest.reduce((t, c) => t + c.percent, 0);
-      list.push({ key: 'rest', label: 'Outras categorias', art: '3d/package.webp', amount, percent, color: '#9aa1b2' });
+      list.push({ key: 'rest', label: 'Outras categorias', art: '3d/package.webp', amount, percent, color: '#9aa39d' });
     }
     return list;
   });
@@ -104,12 +156,6 @@ export class DashboardPage {
     const start = Math.min(this.cardIndex(), Math.max(cards.length - 1, 0));
     return cards.slice(start, start + 2);
   });
-  protected readonly nextChart = computed(() => {
-    const next = this.data.value()?.cards.next ?? [];
-    const max = Math.max(...next.map((n) => n.amount), 1);
-    return next.map((n, i) => ({ ...n, x: 50 + i * 100, y: 40 - (n.amount / max) * 28 }));
-  });
-  protected readonly nextChartPath = computed(() => this.nextChart().map((p) => `${p.x},${p.y}`).join(' '));
 
   // ----- contas a pagar -----
   protected readonly dayFilter = signal<number | null>(null);

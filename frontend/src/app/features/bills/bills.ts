@@ -16,18 +16,17 @@ import { Money } from '../../shared/ui/money';
 import { CATEGORY_META } from '../../shared/utils/labels';
 import { BrlPipe } from '../../shared/utils/money.pipe';
 import { MonthPipe } from '../../shared/utils/month.pipe';
-import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { CategoryIcon } from '../../shared/ui/category-icon';
 
 @Component({
   selector: 'app-bills',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [Illustration, EmptyState, CategoryIcon, FormsModule, ButtonModule, CheckboxModule, TableModule, TagModule, TooltipModule,
+  imports: [EmptyState, CategoryIcon, FormsModule, ButtonModule, CheckboxModule, TableModule, TagModule, TooltipModule,
     Money, BrlPipe, MonthPipe, BillForm],
   template: `
     <div class="page-header">
-      <div class="page-hero"><app-illustration name="receipt" /><div>
+      <div class="page-hero"><div>
         <h1>Contas</h1>
         <p>Contas fixas e avulsas de {{ state.monthLabel() }}. Marque como pagas conforme for quitando.</p>
       </div></div>
@@ -60,7 +59,7 @@ import { CategoryIcon } from '../../shared/ui/category-icon';
               <div class="desc">{{ b.description }}</div>
               <div class="tags">
                 <span class="faint">{{ meta[b.category].label }}</span>
-                @if (b.housing) { <p-tag value="Moradia" severity="info" /> }
+                @if (b.housing && b.category !== 'MORADIA') { <p-tag value="Conta da casa" severity="secondary" /> }
                 @if (!b.recurring) { <p-tag value="Avulsa" severity="warn" /> }
                 @else if (b.endMonth) { <span class="faint">até {{ b.endMonth | month: 'short' }}</span> }
               </div>

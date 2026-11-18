@@ -24,7 +24,7 @@ import { formatBRL } from '../utils/money.pipe';
     <p-dialog [header]="purchase() ? 'Editar compra' : 'Nova compra no cartão'" [visible]="visible()" (visibleChange)="visible.set($event)"
       [modal]="true" [style]="{ width: '500px' }" [breakpoints]="{ '640px': '95vw' }" [draggable]="false">
       @if (!purchase() && cards().length === 0) {
-        <div class="empty"><img src="3d/credit-card.webp" width="64" height="64" alt="" style="margin: 0 auto 0.5rem" />Cadastre um cartão primeiro na tela <b>Cartões</b>.</div>
+        <div class="empty">Cadastre um cartão primeiro na tela <b>Cartões</b>.</div>
       } @else {
         <form [formGroup]="form" (ngSubmit)="save()" class="form-grid">
           <div class="full">

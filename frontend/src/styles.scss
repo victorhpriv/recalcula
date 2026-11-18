@@ -1,38 +1,55 @@
 /* ============ Tokens ============ */
+/*
+ * Sistema visual do Saldo
+ * - Verde (primary) = o que sobra / ações principais. Coral (red) = gastos e alertas.
+ * - Base neutra levemente esverdeada, sem degradês decorativos.
+ * - Hierarquia de cantos: painéis 14px, controles 8px, pílulas só em chips.
+ */
 :root {
-  --app-bg: #f3f5fa;
+  --app-bg: #f2f4f1;
   --app-surface: #ffffff;
-  --app-surface-2: #f7f8fc;
-  --app-border: #e8ebf3;
-  --app-text: #151a2d;
-  --app-text-2: #5b6275;
-  --app-text-3: #9aa1b2;
-  --app-primary: #2f5bea;
-  --app-primary-soft: #eaf0ff;
-  --app-navy: #1e2e7a;
-  --app-green: #22a45d;
-  --app-green-soft: #e7f7ee;
-  --app-red: #e5486b;
-  --app-red-soft: #fdecf0;
-  --app-orange: #e8792f;
-  --app-radius: 18px;
-  --app-radius-sm: 12px;
-  --app-shadow: 0 1px 2px rgba(20, 30, 70, 0.04), 0 8px 24px rgba(20, 30, 70, 0.04);
-  --app-font: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --app-surface-2: #f6f8f5;
+  --app-border: #e1e6e0;
+  --app-border-strong: #c9d0c8;
+  --app-text: #14211b;
+  --app-text-2: #4f5d56;
+  --app-text-3: #8b968f;
+  --app-primary: #0e7a5c;
+  --app-primary-strong: #0a5e47;
+  --app-primary-soft: #e2f1ea;
+  --app-navy: #14211b;
+  --app-green: #0e7a5c;
+  --app-green-soft: #e2f1ea;
+  --app-red: #d4543c;
+  --app-amber: #b7791f;
+  --app-red-soft: #fbeae6;
+  --app-orange: #b7791f;
+  --app-radius: 14px;
+  --app-radius-sm: 8px;
+  --app-shadow: none;
+  --app-shadow-pop: 0 12px 32px -12px rgba(20, 33, 27, 0.28);
+  --app-font: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
 
 .app-dark {
-  --app-bg: #0d1020;
-  --app-surface: #151a2e;
-  --app-surface-2: #1b2138;
-  --app-border: #262d48;
-  --app-text: #eef1fb;
-  --app-text-2: #aab1c7;
-  --app-text-3: #6e7693;
-  --app-primary-soft: #1d2a5c;
-  --app-green-soft: #12301f;
-  --app-red-soft: #3a1622;
-  --app-shadow: none;
+  --app-bg: #0d1411;
+  --app-surface: #141d19;
+  --app-surface-2: #19241f;
+  --app-border: #24312b;
+  --app-border-strong: #33403a;
+  --app-text: #e6ede9;
+  --app-text-2: #a5b2ab;
+  --app-text-3: #6f7c75;
+  --app-primary: #3fbf92;
+  --app-primary-strong: #6fd3ae;
+  --app-primary-soft: #173a2e;
+  --app-navy: #e6ede9;
+  --app-green: #3fbf92;
+  --app-green-soft: #173a2e;
+  --app-red: #f07a63;
+  --app-amber: #e0a94a;
+  --app-red-soft: #3b1f19;
+  --app-shadow-pop: 0 12px 32px -12px rgba(0, 0, 0, 0.6);
 }
 
 /* ============ Base ============ */
@@ -53,8 +70,11 @@ body {
   background: var(--app-bg);
   color: var(--app-text);
   font-size: 14px;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
+
+:focus-visible { outline: 2px solid var(--app-primary); outline-offset: 2px; }
 
 a {
   color: var(--app-primary);
@@ -64,11 +84,11 @@ a {
 h1, h2, h3, h4 {
   margin: 0;
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 /* Números alinhados apenas onde importa (valores), para não espaçar hífens do texto */
-.amount, .kpi .value, .p-datatable td, .legend b { font-variant-numeric: tabular-nums; }
+.amount, .kpi .value, .p-datatable td, .legend b { font-variant-numeric: proportional-nums; }
 
 /* ============ Componentes utilitários ============ */
 .panel {
@@ -81,8 +101,8 @@ h1, h2, h3, h4 {
 }
 
 .panel-title {
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 650;
   color: var(--app-text);
   display: flex;
   align-items: center;
@@ -90,8 +110,8 @@ h1, h2, h3, h4 {
 }
 
 .panel-sub {
-  font-size: 0.75rem;
-  color: var(--app-text-3);
+  font-size: 0.78rem;
+  color: var(--app-text-2);
 }
 
 .muted { color: var(--app-text-2); }
@@ -133,7 +153,7 @@ h1, h2, h3, h4 {
   margin-bottom: 1.25rem;
   flex-wrap: wrap;
 
-  h1 { font-size: 1.5rem; }
+  h1 { font-size: 1.75rem; font-weight: 750; letter-spacing: -0.03em; }
   p { margin: 0.25rem 0 0; color: var(--app-text-2); }
 }
 
@@ -145,8 +165,8 @@ h1, h2, h3, h4 {
 }
 
 .kpi {
-  .label { font-size: 0.75rem; color: var(--app-text-3); margin-bottom: 0.35rem; }
-  .value { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; }
+  .label { font-size: 0.8rem; color: var(--app-text-2); margin-bottom: 0.35rem; }
+  .value { font-size: 1.5rem; font-weight: 750; letter-spacing: -0.03em; }
 }
 
 .form-grid {
@@ -202,31 +222,14 @@ h1, h2, h3, h4 {
   i { font-size: 1.6rem; display: block; margin-bottom: 0.5rem; }
 }
 
-/* ============ Animações ============ */
+/* ============ Movimento ============
+ * Sem animações de entrada em cada bloco. O movimento responde a ações (abrir, confirmar, trocar de tela)
+ * e há um único momento orquestrado: a curva do saldo sendo desenhada na visão geral.
+ */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: none; }
 }
-
-.rise > * {
-  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-.rise > *:nth-child(2) { animation-delay: 0.05s; }
-.rise > *:nth-child(3) { animation-delay: 0.1s; }
-.rise > *:nth-child(4) { animation-delay: 0.15s; }
-.rise > *:nth-child(5) { animation-delay: 0.2s; }
-.rise > *:nth-child(n + 6) { animation-delay: 0.25s; }
-
-/* Itens de lista entram em cascata */
-.stagger > * { animation: rise 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
-.stagger > *:nth-child(1) { animation-delay: 0.02s; }
-.stagger > *:nth-child(2) { animation-delay: 0.05s; }
-.stagger > *:nth-child(3) { animation-delay: 0.08s; }
-.stagger > *:nth-child(4) { animation-delay: 0.11s; }
-.stagger > *:nth-child(5) { animation-delay: 0.14s; }
-.stagger > *:nth-child(6) { animation-delay: 0.17s; }
-.stagger > *:nth-child(7) { animation-delay: 0.2s; }
-.stagger > *:nth-child(n + 8) { animation-delay: 0.23s; }
 
 .list-row { transition: background 0.15s; }
 
@@ -245,25 +248,19 @@ h1, h2, h3, h4 {
 .theme-transition::view-transition-old(root) { z-index: 1; }
 .theme-transition::view-transition-new(root) { z-index: 2; }
 
-/* ---- Barras e progressos crescem ao aparecer ---- */
+/* ---- Barras mudam de tamanho suavemente quando os dados mudam ---- */
 .stack-bar span, .bar span, .gauge-track span, .ob-progress span, .split-bar span {
-  transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
-  @starting-style { width: 0 !important; }
+  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .p-progressbar-value { transition: width 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) !important; }
 
 /* ---- Cards de KPI levantam levemente no hover ---- */
-.kpi.panel, .goal.panel {
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s;
-  &:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(20, 30, 70, 0.04), 0 16px 32px -16px rgba(20, 30, 70, 0.22); }
-}
-.panel { transition: box-shadow 0.25s, border-color 0.25s; }
+.panel { transition: border-color 0.2s; }
 
 /* ---- Botões: resposta tátil ao clicar ---- */
 .p-button { transition: transform 0.12s ease, background 0.2s, box-shadow 0.2s, border-color 0.2s !important; }
 .p-button:not(:disabled):active { transform: scale(0.97); }
-.p-button-primary:not(.p-button-text):not(.p-button-outlined):not(:disabled):hover,
-.p-splitbutton .p-button:not(.p-button-text):not(:disabled):hover { box-shadow: 0 8px 18px -8px var(--app-primary); }
+
 
 /* ---- Linhas de lista ---- */
 .list-row { border-radius: 8px; }
@@ -291,3 +288,27 @@ h1, h2, h3, h4 {
 .w-full.p-inputnumber {
   width: 100%;
 }
+
+/* Etiquetas: discretas, mesma altura do texto auxiliar */
+.p-tag {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  padding: 0.12rem 0.45rem !important;
+  border-radius: 6px !important;
+  line-height: 1.3;
+  gap: 0.25rem;
+  .p-tag-icon { font-size: 0.6rem; }
+}
+.p-tag.p-tag-info, .p-tag.p-tag-secondary { background: color-mix(in srgb, var(--app-text) 7%, transparent) !important; color: var(--app-text-2) !important; }
+.p-tag.p-tag-success { background: var(--app-green-soft) !important; color: var(--app-green) !important; }
+.p-tag.p-tag-warn { background: color-mix(in srgb, var(--app-amber) 14%, transparent) !important; color: var(--app-amber) !important; }
+.p-tag.p-tag-danger { background: color-mix(in srgb, var(--app-red) 12%, transparent) !important; color: var(--app-red) !important; }
+
+/* Ações destrutivas ficam neutras até o hover */
+.p-button.p-button-danger.p-button-text:not(:hover):not(:focus-visible) { color: var(--app-text-3) !important; }
+
+/* Botões no mesmo corpo do texto da interface */
+.p-button { font-size: 0.875rem !important; }
+.p-button .p-button-label { font-size: inherit; font-weight: 600; }
+.p-button.p-button-sm { font-size: 0.8rem !important; }
+.p-button.p-button-secondary.p-button-outlined { color: var(--app-text) !important; border-color: var(--app-border-strong) !important; }

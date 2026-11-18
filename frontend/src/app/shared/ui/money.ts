@@ -14,12 +14,12 @@ const REDUCED_MOTION = typeof window !== 'undefined' && window.matchMedia?.('(pr
     </span>
   `,
   styles: `
-    .money { font-variant-numeric: tabular-nums; display: inline-flex; align-items: baseline; gap: 0.18em; font-weight: 800; letter-spacing: -0.03em; color: var(--app-text); white-space: nowrap; }
-    .cur { color: var(--app-text-3); font-weight: 700; font-size: 0.62em; margin-right: 0.1em; }
-    .cents { font-size: 0.5em; color: var(--app-text-3); font-weight: 600; margin-left: -0.12em; }
+    .money { font-variant-numeric: proportional-nums; display: inline-flex; align-items: baseline; gap: 0.16em; font-weight: 700; letter-spacing: -0.035em; color: var(--app-text); white-space: nowrap; }
+    .cur { color: var(--app-text-3); font-weight: 500; font-size: 0.5em; margin-right: 0.12em; letter-spacing: 0; }
+    .cents { font-size: 0.5em; color: var(--app-text-3); font-weight: 500; margin-left: -0.1em; letter-spacing: 0; }
     .approx { font-size: 0.6em; color: var(--app-text-2); }
     .neg .int, .neg .cents { color: var(--app-red); }
-    .xl { font-size: 2.5rem; }
+    .xl { font-size: 3rem; }
     .lg { font-size: 1.75rem; }
     .md { font-size: 1.25rem; }
     .sm { font-size: 1rem; }
@@ -34,6 +34,7 @@ export class Money {
 
   private readonly shown = signal(0);
   private frame = 0;
+  private initialized = false;
 
   protected readonly negative = computed(() => (this.value() ?? 0) < 0);
   protected readonly label = computed(() =>
@@ -56,7 +57,9 @@ export class Money {
   private animateTo(target: number): void {
     cancelAnimationFrame(this.frame);
     const from = this.shown();
-    if (REDUCED_MOTION || this.static() || from === target) {
+    // Primeira exibição sem animação; anima só quando o valor muda (ex.: troca de mês).
+    if (!this.initialized || REDUCED_MOTION || this.static() || from === target) {
+      this.initialized = true;
       this.shown.set(target);
       return;
     }
