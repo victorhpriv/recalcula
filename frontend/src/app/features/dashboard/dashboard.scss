@@ -16,7 +16,7 @@
 /* ---- saldo ---- */
 .balance-main { gap: 1.25rem; margin-top: 0.75rem; flex-wrap: wrap; }
 .balance-note { font-size: 0.72rem; }
-.free { color: var(--app-green); font-weight: 600; margin-bottom: 0.15rem; i { font-size: 0.7rem; } }
+.free { color: var(--app-green); font-weight: 600; margin-bottom: 0.15rem; display: flex; align-items: center; gap: 0.3rem; }
 .stack-bar {
   display: flex; gap: 3px; height: 8px; margin: 1.4rem 0 0.8rem;
   span { border-radius: 99px; transition: width 0.4s ease; }
@@ -43,11 +43,19 @@
   &.on { background: var(--app-primary); border-color: var(--app-primary); color: #fff; .pend { background: #fff; } }
 }
 .bill-list { max-height: 260px; overflow-y: auto; }
-.bill-item { cursor: pointer; &.paid { color: var(--app-text-3); .grow { text-decoration: line-through; } } }
+.bill-item {
+  cursor: pointer;
+  .grow { transition: color 0.3s; }
+  .txt { position: relative; }
+  .txt::after { content: ''; position: absolute; left: 0; top: 55%; height: 1.5px; width: 0; background: currentColor; transition: width 0.35s cubic-bezier(.2,.8,.2,1); }
+  .amount { transition: color 0.3s, opacity 0.3s; }
+  &.paid { color: var(--app-text-3); .txt::after { width: 100%; } .amount { opacity: 0.55; } }
+}
 
 /* ---- gastos por categoria ---- */
 .cat-bar { margin: 1.1rem 0 0.4rem; }
-.cat-ic { width: 28px; height: 28px; border-radius: 9px; color: var(--c); background: color-mix(in srgb, var(--c) 13%, transparent); display: grid; place-items: center; flex-shrink: 0; i { font-size: 0.75rem; } }
+.cat-ic { width: 32px; height: 32px; border-radius: 10px; background: color-mix(in srgb, var(--c) 12%, transparent); display: grid; place-items: center; flex-shrink: 0; transition: transform 0.25s cubic-bezier(.2,.8,.2,1); img { filter: drop-shadow(0 2px 3px rgba(0,0,0,.12)); } }
+.list-row:hover .cat-ic { transform: scale(1.08) rotate(-4deg); }
 .pct-col { font-size: 0.7rem; width: 3rem; text-align: right; }
 .scroll-list { max-height: 300px; overflow-y: auto; }
 
@@ -56,7 +64,9 @@
   width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--app-border); background: var(--app-surface);
   color: var(--app-text-2); cursor: pointer; display: grid; place-items: center;
   &:disabled { opacity: 0.4; cursor: default; }
-  i { font-size: 0.7rem; }
+  transition: transform 0.15s, background 0.15s;
+  &:not(:disabled):hover { background: var(--app-surface-2); }
+  &:not(:disabled):active { transform: scale(0.9); }
 }
 .card-strip { display: flex; gap: 0.6rem; overflow: hidden; min-height: 120px; }
 .cc {
@@ -85,7 +95,7 @@
 .current .next-amount { color: var(--app-primary); font-weight: 700; }
 
 /* ---- moradia ---- */
-.ref { font-size: 0.72rem; font-weight: 600; margin-top: 0.15rem; .faint { font-weight: 400; } i { font-size: 0.65rem; } }
+.ref { font-size: 0.72rem; font-weight: 600; margin-top: 0.15rem; display: flex; align-items: center; gap: 0.3rem; flex-wrap: wrap; .faint { font-weight: 400; } }
 .gauge { position: relative; margin-top: 2rem; }
 .gauge-ref {
   position: absolute; top: -14px; bottom: 14px; width: 2px; background: var(--app-text);
@@ -131,9 +141,10 @@
   &:hover:not(:disabled) { border-color: var(--app-primary); transform: translateY(-1px); }
   &.done { color: var(--app-text-3); cursor: default; text-decoration: line-through; }
 }
-.ob-check { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
-  background: var(--app-primary-soft); color: var(--app-primary); i { font-size: 0.72rem; } }
-.done .ob-check { background: var(--app-green); color: #fff; }
+.ob-check { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; flex-shrink: 0;
+  background: var(--app-primary-soft); color: var(--app-primary); transition: background 0.3s, transform 0.3s; }
+.done .ob-check { background: var(--app-green); color: #fff; animation: pop 0.45s cubic-bezier(.2,1.4,.4,1); }
+@keyframes pop { 0% { transform: scale(0.6); } 100% { transform: scale(1); } }
 @media (max-width: 900px) {
   .onboarding { flex-direction: column; align-items: stretch; app-illustration { display: none; } }
   .ob-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }

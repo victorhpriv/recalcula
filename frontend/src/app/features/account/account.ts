@@ -12,11 +12,13 @@ import { TagModule } from 'primeng/tag';
 import { ApiService } from '../../core/api/api.service';
 import { AuthService } from '../../core/auth/auth.service';
 import { Avatar } from '../../shared/ui/avatar';
+import { LucideAngularModule } from 'lucide-angular';
+import { I } from '../../shared/ui/icons';
 
 @Component({
   selector: 'app-account',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DatePipe, FormsModule, ReactiveFormsModule, ButtonModule, DialogModule, InputTextModule, PasswordModule, TagModule, Avatar],
+  imports: [LucideAngularModule, DatePipe, FormsModule, ReactiveFormsModule, ButtonModule, DialogModule, InputTextModule, PasswordModule, TagModule, Avatar],
   template: `
     <div class="page-header">
       <div class="page-hero">
@@ -75,22 +77,22 @@ import { Avatar } from '../../shared/ui/avatar';
 
       <div class="stack">
         <section class="panel">
-          <div class="panel-title"><i class="pi pi-download"></i> Exportar meus dados</div>
+          <div class="panel-title"><lucide-icon [img]="I.Download" [size]="16" /> Exportar meus dados</div>
           <p class="muted txt">Baixe um arquivo JSON com tudo o que você cadastrou no Saldo: rendas, contas, cartões, compras, lançamentos e reserva.</p>
           <p-button label="Baixar meus dados" icon="pi pi-download" severity="secondary" [outlined]="true" [loading]="exporting()" (onClick)="exportData()" />
         </section>
 
         <section class="panel danger">
-          <div class="panel-title"><i class="pi pi-exclamation-triangle"></i> Excluir conta</div>
+          <div class="panel-title"><lucide-icon [img]="I.TriangleAlert" [size]="16" /> Excluir conta</div>
           <p class="muted txt">Apaga definitivamente sua conta e <b>todos</b> os seus dados. Essa ação não pode ser desfeita. Se quiser, exporte seus dados antes.</p>
           <p-button label="Excluir minha conta" icon="pi pi-trash" severity="danger" [outlined]="true" (onClick)="deleteOpen.set(true)" />
         </section>
 
         <section class="panel">
-          <div class="panel-title"><i class="pi pi-file"></i> Documentos</div>
+          <div class="panel-title"><lucide-icon [img]="I.FileText" [size]="16" /> Documentos</div>
           <div class="links">
-            <a href="/termos.html" target="_blank" rel="noopener">Termos de Uso <i class="pi pi-external-link"></i></a>
-            <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade <i class="pi pi-external-link"></i></a>
+            <a href="/termos.html" target="_blank" rel="noopener">Termos de Uso <lucide-icon [img]="I.ArrowUpRight" [size]="14" /></a>
+            <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade <lucide-icon [img]="I.ArrowUpRight" [size]="14" /></a>
           </div>
         </section>
       </div>
@@ -116,6 +118,7 @@ import { Avatar } from '../../shared/ui/avatar';
   `,
 })
 export class AccountPage {
+  protected readonly I = I;
   private readonly api = inject(ApiService);
   private readonly messages = inject(MessageService);
   private readonly fb = inject(FormBuilder);

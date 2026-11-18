@@ -36,19 +36,24 @@
 }
 
 .nav-item {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.65rem;
-  border-radius: 10px;
+  gap: 0.7rem;
+  padding: 0.58rem 0.7rem;
+  border-radius: 11px;
   color: var(--app-text-2);
-  font-size: 0.82rem;
+  font-size: 0.83rem;
   font-weight: 500;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.2s, color 0.2s;
 
-  i { font-size: 0.9rem; }
-  &:hover { background: var(--app-surface-2); color: var(--app-text); }
-  &.active { background: var(--app-primary-soft); color: var(--app-primary); font-weight: 700; }
+  lucide-icon { display: inline-flex; transition: transform 0.25s cubic-bezier(.2,.8,.2,1); }
+  &::before {
+    content: ''; position: absolute; left: -0.75rem; top: 22%; bottom: 22%; width: 3px; border-radius: 0 4px 4px 0;
+    background: var(--app-primary); transform: scaleY(0); transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
+  }
+  &:hover { background: var(--app-surface-2); color: var(--app-text); lucide-icon { transform: translateX(2px) scale(1.06); } }
+  &.active { background: var(--app-primary-soft); color: var(--app-primary); font-weight: 700; &::before { transform: scaleY(1); } }
 }
 
 .sidebar-bottom { margin-top: auto; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -62,7 +67,7 @@
   display: flex; background: var(--app-surface-2); border: 1px solid var(--app-border); border-radius: 999px; padding: 2px;
   button {
     border: none; background: transparent; color: var(--app-text-3); width: 26px; height: 22px; border-radius: 999px; cursor: pointer;
-    i { margin: 0; font-size: 0.75rem; }
+    display: grid; place-items: center; transition: background 0.2s, color 0.2s;
     &.on { background: var(--app-surface); color: var(--app-text); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12); }
   }
 }
@@ -83,8 +88,9 @@
 }
 .icon-btn {
   width: 32px; height: 32px; border-radius: 10px; border: none; background: transparent; color: var(--app-text-2);
-  cursor: pointer; display: grid; place-items: center;
-  &:hover { background: var(--app-surface-2); }
+  cursor: pointer; display: grid; place-items: center; transition: background 0.2s, transform 0.15s;
+  &:hover { background: var(--app-surface-2); color: var(--app-text); }
+  &:active { transform: scale(0.92); }
 }
 .hamburger { display: none; }
 .month-btn {
@@ -92,8 +98,8 @@
   font: inherit; padding: 0.25rem 0.4rem; border-radius: 8px;
   .m-name { font-size: 1.15rem; font-weight: 700; }
   .m-year { font-size: 1.15rem; font-weight: 500; color: var(--app-text-3); }
-  i { font-size: 0.7rem; color: var(--app-text-3); }
-  &:hover { background: var(--app-surface-2); }
+  .chev { color: var(--app-text-3); display: inline-flex; align-self: center; transition: transform 0.2s; }
+  &:hover { background: var(--app-surface-2); .chev { transform: translateY(2px); } }
 }
 .today-link { display: flex; justify-content: center; }
 
@@ -101,7 +107,7 @@
 .verify-banner {
   display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 1rem; border-radius: 14px; font-size: 0.8rem;
   background: color-mix(in srgb, #f59e0b 14%, var(--app-surface)); border: 1px solid color-mix(in srgb, #f59e0b 35%, transparent);
-  > i { color: #d97706; }
+  .mail-ic { color: #d97706; display: inline-flex; }
   .sent { color: var(--app-green); font-weight: 600; white-space: nowrap; }
 }
 .backdrop { display: none; }
