@@ -1,6 +1,7 @@
 package br.com.saldo.config;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -48,7 +49,8 @@ public class SecurityConfig {
     };
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, CorsConfigurationSource corsSource) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http,
+            @Qualifier("corsConfigurationSource") CorsConfigurationSource corsSource) throws Exception {
         http
                 // API stateless com bearer token; o cookie de refresh é SameSite=Strict e a origem é validada.
                 .csrf(AbstractHttpConfigurer::disable)
