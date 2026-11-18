@@ -18,7 +18,9 @@ import { EmptyState } from '../../shared/ui/empty-state';
 import { CategoryIcon } from '../../shared/ui/category-icon';
 import { AuthService } from '../../core/auth/auth.service';
 import { Money } from '../../shared/ui/money';
-import { CATEGORY_META, INVOICE_STATUS } from '../../shared/utils/labels';
+import { CATEGORY_META, INVOICE_STATUS, categoryArt } from '../../shared/utils/labels';
+import { LucideAngularModule } from 'lucide-angular';
+import { I } from '../../shared/ui/icons';
 import { BrlPipe } from '../../shared/utils/money.pipe';
 import { MonthPipe } from '../../shared/utils/month.pipe';
 import { monthName } from '../../shared/utils/dates';
@@ -44,7 +46,7 @@ function writeFlag(key: string): void {
 @Component({
   selector: 'app-dashboard',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, FormsModule, DecimalPipe, ButtonModule, CheckboxModule, SkeletonModule, TagModule, TooltipModule, Money,
+  imports: [LucideAngularModule, RouterLink, FormsModule, DecimalPipe, ButtonModule, CheckboxModule, SkeletonModule, TagModule, TooltipModule, Money,
     Illustration, EmptyState, CategoryIcon, BrlPipe, MonthPipe],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
@@ -60,6 +62,7 @@ export class DashboardPage {
   });
 
   protected readonly categoryMeta = CATEGORY_META;
+  protected readonly I = I;
   protected readonly invoiceStatus = INVOICE_STATUS;
   protected readonly monthName = computed(() => monthName(this.state.month()).toLowerCase());
 
@@ -83,12 +86,12 @@ export class DashboardPage {
     if (!s) return [];
     const top = s.categories.slice(0, 6);
     const rest = s.categories.slice(6);
-    const list = top.map((c) => ({ key: c.category as string, label: CATEGORY_META[c.category].label, icon: CATEGORY_META[c.category].icon,
+    const list = top.map((c) => ({ key: c.category as string, label: CATEGORY_META[c.category].label, art: categoryArt(c.category),
       amount: c.amount, percent: c.percent, color: CATEGORY_META[c.category].color }));
     if (rest.length) {
       const amount = rest.reduce((t, c) => t + c.amount, 0);
       const percent = rest.reduce((t, c) => t + c.percent, 0);
-      list.push({ key: 'rest', label: 'Outras categorias', icon: 'pi pi-ellipsis-h', amount, percent, color: '#9aa1b2' });
+      list.push({ key: 'rest', label: 'Outras categorias', art: '3d/package.webp', amount, percent, color: '#9aa1b2' });
     }
     return list;
   });
@@ -164,10 +167,10 @@ export class DashboardPage {
     const d = this.data.value();
     if (!d || this.onboardingHidden()) return null;
     const steps = [
-      { label: 'Cadastre sua renda', icon: 'pi pi-money-bill', done: d.housing.income > 0, action: () => this.state.openQuickAdd('income') },
-      { label: 'Adicione suas contas fixas', icon: 'pi pi-receipt', done: d.upcoming.items.some((i) => i.kind === 'BILL'), action: () => this.state.openQuickAdd('bill') },
-      { label: 'Cadastre um cartão', icon: 'pi pi-credit-card', done: d.cards.cards.length > 0, action: () => this.router.navigateByUrl('/cartoes') },
-      { label: 'Registre um gasto do dia', icon: 'pi pi-shopping-bag', done: d.balance.daily > 0, action: () => this.state.openQuickAdd('cash') },
+      { label: 'Cadastre sua renda', art: '3d/dollar-banknote.webp', done: d.housing.income > 0, action: () => this.state.openQuickAdd('income') },
+      { label: 'Adicione suas contas fixas', art: '3d/receipt.webp', done: d.upcoming.items.some((i) => i.kind === 'BILL'), action: () => this.state.openQuickAdd('bill') },
+      { label: 'Cadastre um cartão', art: '3d/credit-card.webp', done: d.cards.cards.length > 0, action: () => this.router.navigateByUrl('/cartoes') },
+      { label: 'Registre um gasto do dia', art: '3d/shopping-bags.webp', done: d.balance.daily > 0, action: () => this.state.openQuickAdd('cash') },
     ];
     const done = steps.filter((s) => s.done).length;
     return done === steps.length ? null : { steps, done };

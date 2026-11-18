@@ -6,8 +6,8 @@
     <div class="brand">
       <img class="brand-logo" src="favicon.svg" width="34" height="34" alt="" />
       <div>
-        <div class="brand-name">Saldo</div>
-        <div class="brand-sub">Finanças pessoais</div>
+        <div class="brand-name">{{ brand.name }}</div>
+        <div class="brand-sub">{{ brand.tagline }}</div>
       </div>
     </div>
 
@@ -15,23 +15,23 @@
       <div class="nav-title">Menu</div>
       @for (item of menu; track item.link) {
         <a [routerLink]="item.link" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.link === '/' }" class="nav-item">
-          <i [class]="item.icon"></i><span>{{ item.label }}</span>
+          <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2" /><span>{{ item.label }}</span>
         </a>
       }
       <div class="nav-title">Ajustes</div>
       @for (item of settings; track item.link) {
         <a [routerLink]="item.link" routerLinkActive="active" class="nav-item">
-          <i [class]="item.icon"></i><span>{{ item.label }}</span>
+          <lucide-icon [img]="item.icon" [size]="18" [strokeWidth]="2" /><span>{{ item.label }}</span>
         </a>
       }
     </nav>
 
     <div class="sidebar-bottom">
       <div class="theme-row">
-        <span><i class="pi pi-palette"></i> Tema</span>
+        <span class="row" style="gap: 0.4rem"><lucide-icon [img]="I.Palette" [size]="15" /> Tema</span>
         <div class="theme-toggle" role="group" aria-label="Tema">
-          <button type="button" [class.on]="theme.theme() === 'light'" (click)="theme.set('light')" aria-label="Tema claro"><i class="pi pi-sun"></i></button>
-          <button type="button" [class.on]="theme.theme() === 'dark'" (click)="theme.set('dark')" aria-label="Tema escuro"><i class="pi pi-moon"></i></button>
+          <button type="button" [class.on]="theme.theme() === 'light'" (click)="switchTheme('light', $event)" aria-label="Tema claro"><lucide-icon [img]="I.Sun" [size]="13" [strokeWidth]="2.4" /></button>
+          <button type="button" [class.on]="theme.theme() === 'dark'" (click)="switchTheme('dark', $event)" aria-label="Tema escuro"><lucide-icon [img]="I.Moon" [size]="13" [strokeWidth]="2.4" /></button>
         </div>
       </div>
       <button type="button" class="user-card" (click)="userMenu.toggle($event)">
@@ -40,7 +40,7 @@
           <div class="user-name">{{ auth.user()?.name }}</div>
           <div class="user-email">{{ auth.user()?.email }}</div>
         </div>
-        <i class="pi pi-angle-up faint"></i>
+        <lucide-icon [img]="I.ChevronsUpDown" [size]="16" class="faint" />
       </button>
       <p-menu #userMenu [model]="userItems" [popup]="true" appendTo="body" />
     </div>
@@ -50,13 +50,13 @@
 
   <main class="main">
     <header class="topbar panel">
-      <button type="button" class="icon-btn hamburger" (click)="mobileOpen.set(true)" aria-label="Abrir menu"><i class="pi pi-bars"></i></button>
-      <button type="button" class="icon-btn" (click)="state.previousMonth()" aria-label="Mês anterior"><i class="pi pi-angle-left"></i></button>
-      <button type="button" class="icon-btn" (click)="state.nextMonth()" aria-label="Próximo mês"><i class="pi pi-angle-right"></i></button>
+      <button type="button" class="icon-btn hamburger" (click)="mobileOpen.set(true)" aria-label="Abrir menu"><lucide-icon [img]="I.Menu" [size]="20" /></button>
+      <button type="button" class="icon-btn" (click)="state.previousMonth()" aria-label="Mês anterior"><lucide-icon [img]="I.ChevronLeft" [size]="18" /></button>
+      <button type="button" class="icon-btn" (click)="state.nextMonth()" aria-label="Próximo mês"><lucide-icon [img]="I.ChevronRight" [size]="18" /></button>
       <button type="button" class="month-btn" (click)="monthPop.toggle($event)">
         <span class="m-name">{{ state.monthLabel().split(' ')[0] }}</span>
         <span class="m-year">{{ state.monthLabel().split(' ')[1] }}</span>
-        <i class="pi pi-angle-down"></i>
+        <lucide-icon [img]="I.ChevronDown" [size]="14" class="chev" />
       </button>
       <p-popover #monthPop>
         <p-datepicker [ngModel]="monthDate()" (ngModelChange)="pickMonth($event, monthPop)" view="month" [inline]="true" />
@@ -69,10 +69,10 @@
 
     @if (auth.user() && !auth.user()!.emailVerified) {
       <div class="verify-banner">
-        <i class="pi pi-envelope"></i>
+        <lucide-icon [img]="I.Mail" [size]="18" class="mail-ic" />
         <span class="grow">Confirme seu e-mail <b>{{ auth.user()!.email }}</b> para proteger sua conta e poder recuperar a senha.</span>
         @if (resent()) {
-          <span class="sent"><i class="pi pi-check"></i> E-mail enviado</span>
+          <span class="sent"><lucide-icon [img]="I.Check" [size]="14" /> E-mail enviado</span>
         } @else {
           <p-button label="Reenviar e-mail" size="small" [text]="true" (onClick)="resendVerification()" />
         }

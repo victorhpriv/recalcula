@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
-import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { providePrimeNG } from 'primeng/config';
@@ -27,7 +27,13 @@ registerLocaleData(localePt);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes, withComponentInputBinding(), withInMemoryScrolling({ scrollPositionRestoration: 'top' })),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({ scrollPositionRestoration: 'top' }),
+      // Transição suave entre telas (View Transitions API; navegadores sem suporte trocam normalmente)
+      withViewTransitions({ skipInitialTransition: true }),
+    ),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
     providePrimeNG({
       theme: { preset: AppPreset, options: { darkModeSelector: '.app-dark', cssLayer: false } },

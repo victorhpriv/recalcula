@@ -17,7 +17,7 @@ import { AuthHero } from './auth-hero';
     <div class="form-side">
       @if (sent()) {
         <div class="box">
-          <img src="illustrations/calendar.svg" width="72" height="72" alt="" />
+          <img src="3d/envelope.webp" width="72" height="72" alt="" />
           <h2>Confira seu e-mail</h2>
           <p class="sub">Se existir uma conta com <b>{{ form.controls.email.value }}</b>, enviamos um link para criar uma nova senha. Ele vale por 1 hora.</p>
           <p class="sub">Não chegou? Veja a caixa de spam ou tente de novo em alguns minutos.</p>

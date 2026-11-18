@@ -39,7 +39,7 @@ import { EmptyState } from '../../shared/ui/empty-state';
       <div class="panel-title">Rendas cadastradas</div>
       @for (i of data.value() ?? []; track i.id) {
         <div class="list-row" [class.inactive]="!i.activeInMonth">
-          <span class="inc-icon"><i class="pi pi-arrow-down-left"></i></span>
+          <span class="inc-icon"><img src="3d/dollar-banknote.webp" width="22" height="22" alt="" /></span>
           <div class="grow">
             <div style="font-weight: 600">{{ i.description }}</div>
             <div class="faint" style="font-size: 0.72rem">
@@ -64,7 +64,7 @@ import { EmptyState } from '../../shared/ui/empty-state';
   `,
   styles: `
     .inactive { opacity: 0.55; }
-    .inc-icon { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--app-green-soft); color: var(--app-green); flex-shrink: 0; }
+    .inc-icon { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--app-green-soft); flex-shrink: 0; }
     .inc-icon i { font-size: 0.8rem; }
   `,
 })

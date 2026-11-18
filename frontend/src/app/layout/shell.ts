@@ -11,6 +11,9 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ToastModule } from 'primeng/toast';
 
 import { AuthService } from '../core/auth/auth.service';
+import { LucideAngularModule, LucideIconData } from 'lucide-angular';
+import { I } from '../shared/ui/icons';
+import { BRAND } from '../core/brand';
 import { ApiService } from '../core/api/api.service';
 import { AppState, QuickAddKind } from '../core/state/app-state.service';
 import { ThemeService } from '../core/theme/theme.service';
@@ -23,14 +26,14 @@ import { fromYearMonth, toYearMonth } from '../shared/utils/dates';
 
 interface NavItem {
   label: string;
-  icon: string;
+  icon: LucideIconData;
   link: string;
 }
 
 @Component({
   selector: 'app-shell',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ButtonModule, SplitButtonModule, ToastModule,
+  imports: [LucideAngularModule, RouterOutlet, RouterLink, RouterLinkActive, FormsModule, ButtonModule, SplitButtonModule, ToastModule,
     ConfirmDialogModule, MenuModule, PopoverModule, DatePickerModule, Avatar, BillForm, CashEntryForm, IncomeForm,
     PurchaseForm],
   templateUrl: './shell.html',
@@ -43,18 +46,20 @@ export class Shell {
   private readonly api = inject(ApiService);
 
   protected readonly mobileOpen = signal(false);
+  protected readonly I = I;
+  protected readonly brand = BRAND;
 
   protected readonly menu: NavItem[] = [
-    { label: 'Visão geral', icon: 'pi pi-th-large', link: '/' },
-    { label: 'Fluxo de caixa', icon: 'pi pi-arrow-right-arrow-left', link: '/fluxo' },
-    { label: 'Cartões', icon: 'pi pi-credit-card', link: '/cartoes' },
-    { label: 'Contas', icon: 'pi pi-receipt', link: '/contas' },
-    { label: 'Reserva', icon: 'pi pi-wallet', link: '/reserva' },
+    { label: 'Visão geral', icon: I.LayoutDashboard, link: '/' },
+    { label: 'Fluxo de caixa', icon: I.ArrowLeftRight, link: '/fluxo' },
+    { label: 'Cartões', icon: I.CreditCard, link: '/cartoes' },
+    { label: 'Contas', icon: I.ReceiptText, link: '/contas' },
+    { label: 'Reserva', icon: I.PiggyBank, link: '/reserva' },
   ];
 
   protected readonly settings: NavItem[] = [
-    { label: 'Renda', icon: 'pi pi-money-bill', link: '/renda' },
-    { label: 'Minha conta', icon: 'pi pi-user', link: '/conta' },
+    { label: 'Renda', icon: I.Wallet, link: '/renda' },
+    { label: 'Minha conta', icon: I.UserRound, link: '/conta' },
   ];
 
   protected readonly addItems: MenuItem[] = [
@@ -86,6 +91,28 @@ export class Shell {
 
   protected add(kind: QuickAddKind): void {
     this.state.openQuickAdd(kind);
+  }
+
+  /** Troca de tema com revelação circular a partir do botão clicado (View Transitions API). */
+  protected switchTheme(theme: 'light' | 'dark', event: MouseEvent): void {
+    if (this.theme.theme() === theme) return;
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } };
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (!doc.startViewTransition || reduce) {
+      this.theme.set(theme);
+      return;
+    }
+    const x = event.clientX;
+    const y = event.clientY;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    document.documentElement.classList.add('theme-transition');
+    const transition = doc.startViewTransition(() => this.theme.set(theme));
+    transition.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+        { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)', pseudoElement: '::view-transition-new(root)' },
+      ).finished.finally(() => document.documentElement.classList.remove('theme-transition'));
+    });
   }
 
   protected closeQuickAdd(open: boolean): void {

@@ -18,13 +18,13 @@ import { AuthHero } from './auth-hero';
         @switch (status()) {
           @case ('loading') { <h2>Confirmando seu e-mail…</h2> }
           @case ('ok') {
-            <img src="illustrations/receipt.svg" width="72" height="72" alt="" />
+            <img src="3d/check-mark-button.webp" width="72" height="72" alt="" />
             <h2>E-mail confirmado!</h2>
             <p class="sub">Tudo certo. Sua conta está protegida.</p>
             <p-button [label]="auth.isAuthenticated() ? 'Ir para o app' : 'Entrar'" styleClass="w-full" [routerLink]="auth.isAuthenticated() ? '/' : '/login'" />
           }
           @case ('error') {
-            <img src="illustrations/empty.svg" width="72" height="72" alt="" />
+            <img src="3d/locked.webp" width="72" height="72" alt="" />
             <h2>Não foi possível confirmar</h2>
             <p class="sub">{{ error() }}</p>
             <p class="sub">Entre no app e peça um novo link no aviso do topo da tela.</p>

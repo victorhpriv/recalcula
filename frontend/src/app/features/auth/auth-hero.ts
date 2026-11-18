@@ -14,19 +14,19 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       </div>
       <div class="m-cc"><span>Meu cartão</span><div class="m-chip"></div><b>•••• fatura R$ 2.410,50</b></div>
       <div class="m-card m-cat">
-        <img src="illustrations/chart.svg" width="44" height="44" alt="" />
+        <img src="3d/bar-chart.webp" width="44" height="44" alt="" />
         <div><div class="m-l">Maior gasto</div><b>Moradia · 49%</b></div>
       </div>
-      <img class="m-ill m-ill-1" src="illustrations/wallet.svg" width="92" height="92" alt="" />
-      <img class="m-ill m-ill-2" src="illustrations/piggy.svg" width="78" height="78" alt="" />
+      <img class="m-ill m-ill-1" src="3d/purse.webp" width="92" height="92" alt="" />
+      <img class="m-ill m-ill-2" src="3d/money-bag.webp" width="78" height="78" alt="" />
     </div>
     <div style="position: relative; z-index: 1">
       <h1>Saiba quanto sobra antes do mês acabar.</h1>
       <p>Contas, cartões, gastos do dia a dia e reserva em um só lugar, com o saldo previsto sempre atualizado.</p>
       <div class="features">
-        <div><i class="pi pi-chart-pie"></i> Veja para onde vai o seu dinheiro</div>
-        <div><i class="pi pi-credit-card"></i> Faturas e parcelas calculadas automaticamente</div>
-        <div><i class="pi pi-shield"></i> Seus dados protegidos e só seus</div>
+        <div><img src="3d/bar-chart.webp" width="30" height="30" alt="" /> Veja para onde vai o seu dinheiro</div>
+        <div><img src="3d/credit-card.webp" width="30" height="30" alt="" /> Faturas e parcelas calculadas automaticamente</div>
+        <div><img src="3d/shield.webp" width="30" height="30" alt="" /> Seus dados protegidos e só seus</div>
       </div>
     </div>
   `,
@@ -59,7 +59,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   @media (prefers-reduced-motion: reduce) { .m-card, .m-cc, .m-ill { animation: none; } }
   .features { display: grid; gap: 0.75rem; position: relative; z-index: 1; }
   .features div { display: flex; gap: 0.6rem; align-items: center; font-size: 0.9rem; }
-  .features i { background: rgba(255, 255, 255, 0.18); padding: 0.45rem; border-radius: 10px; font-size: 0.85rem; }
+  .features img { background: rgba(255, 255, 255, 0.18); padding: 0.3rem; border-radius: 10px; box-sizing: content-box; }
   `,
 })
 export class AuthHero {}

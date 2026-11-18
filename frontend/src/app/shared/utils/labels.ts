@@ -6,30 +6,35 @@ export interface Option<T> {
   icon?: string;
 }
 
-export const CATEGORY_META: Record<Category, { label: string; icon: string; color: string }> = {
-  MORADIA: { label: 'Moradia', icon: 'pi pi-home', color: '#2f5bea' },
-  ALIMENTACAO: { label: 'Alimentação', icon: 'pi pi-shopping-bag', color: '#e8792f' },
-  MERCADO: { label: 'Mercado', icon: 'pi pi-shopping-cart', color: '#16a34a' },
-  TRANSPORTE: { label: 'Transporte', icon: 'pi pi-car', color: '#0ea5e9' },
-  SAUDE: { label: 'Saúde', icon: 'pi pi-heart', color: '#e5486b' },
-  EDUCACAO: { label: 'Educação', icon: 'pi pi-book', color: '#7c3aed' },
-  LAZER: { label: 'Lazer', icon: 'pi pi-face-smile', color: '#f59e0b' },
-  SERVICOS: { label: 'Serviços', icon: 'pi pi-bolt', color: '#eab308' },
-  CARTAO: { label: 'Cartão', icon: 'pi pi-credit-card', color: '#1e2e7a' },
-  RESERVA: { label: 'Reserva', icon: 'pi pi-wallet', color: '#22a45d' },
-  FAMILIA: { label: 'Família', icon: 'pi pi-users', color: '#db2777' },
-  COMPRAS: { label: 'Compras', icon: 'pi pi-tag', color: '#c026d3' },
-  ASSINATURAS: { label: 'Assinaturas', icon: 'pi pi-play-circle', color: '#6366f1' },
-  PETS: { label: 'Pets', icon: 'pi pi-star', color: '#a16207' },
-  VIAGEM: { label: 'Viagem', icon: 'pi pi-globe', color: '#0891b2' },
-  SALARIO: { label: 'Salário', icon: 'pi pi-money-bill', color: '#22a45d' },
-  OUTROS: { label: 'Outros', icon: 'pi pi-ellipsis-h', color: '#6b7280' },
+/** Rótulo, ilustração 3D (public/3d) e cor de cada categoria. */
+export const CATEGORY_META: Record<Category, { label: string; art: string; color: string }> = {
+  MORADIA: { label: 'Moradia', art: 'house', color: '#2f5bea' },
+  ALIMENTACAO: { label: 'Alimentação', art: 'hamburger', color: '#e8792f' },
+  MERCADO: { label: 'Mercado', art: 'shopping-cart', color: '#16a34a' },
+  TRANSPORTE: { label: 'Transporte', art: 'automobile', color: '#0ea5e9' },
+  SAUDE: { label: 'Saúde', art: 'stethoscope', color: '#e5486b' },
+  EDUCACAO: { label: 'Educação', art: 'graduation-cap', color: '#7c3aed' },
+  LAZER: { label: 'Lazer', art: 'popcorn', color: '#f59e0b' },
+  SERVICOS: { label: 'Serviços', art: 'high-voltage', color: '#eab308' },
+  CARTAO: { label: 'Cartão', art: 'credit-card', color: '#1e2e7a' },
+  RESERVA: { label: 'Reserva', art: 'money-bag', color: '#22a45d' },
+  FAMILIA: { label: 'Família', art: 'heart-with-ribbon', color: '#db2777' },
+  COMPRAS: { label: 'Compras', art: 'shopping-bags', color: '#c026d3' },
+  ASSINATURAS: { label: 'Assinaturas', art: 'television', color: '#6366f1' },
+  PETS: { label: 'Pets', art: 'dog-face', color: '#a16207' },
+  VIAGEM: { label: 'Viagem', art: 'airplane', color: '#0891b2' },
+  SALARIO: { label: 'Salário', art: 'dollar-banknote', color: '#22a45d' },
+  OUTROS: { label: 'Outros', art: 'package', color: '#6b7280' },
 };
+
+export function categoryArt(c: Category): string {
+  return `3d/${CATEGORY_META[c].art}.webp`;
+}
 
 export const CATEGORY_OPTIONS: Option<Category>[] = (Object.keys(CATEGORY_META) as Category[]).map((c) => ({
   label: CATEGORY_META[c].label,
   value: c,
-  icon: CATEGORY_META[c].icon,
+  icon: categoryArt(c),
 }));
 
 export const INCOME_TYPE_OPTIONS: Option<IncomeType>[] = [

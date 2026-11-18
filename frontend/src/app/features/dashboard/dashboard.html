@@ -28,7 +28,7 @@
         <div class="ob-steps">
           @for (step of ob.steps; track step.label) {
             <button type="button" class="ob-step" [class.done]="step.done" (click)="step.action()" [disabled]="step.done">
-              <span class="ob-check"><i [class]="step.done ? 'pi pi-check' : step.icon"></i></span>
+              <span class="ob-check">@if (step.done) { <lucide-icon [img]="I.Check" [size]="14" [strokeWidth]="3" /> } @else { <img [src]="step.art" width="20" height="20" alt="" /> }</span>
               <span>{{ step.label }}</span>
             </button>
           }
@@ -47,7 +47,7 @@
             <app-money [value]="d.balance.projected" size="xl" />
             <div class="balance-note">
               <div class="free" [class.text-red]="d.balance.projected < 0">
-                <i class="pi" [class.pi-arrow-up-right]="d.balance.projected >= 0" [class.pi-arrow-down-right]="d.balance.projected < 0"></i>
+                <lucide-icon [img]="d.balance.projected >= 0 ? I.TrendingUp : I.ArrowDownRight" [size]="14" [strokeWidth]="2.5" />
                 {{ d.balance.freePercent | number: '1.0-1' }}% da renda livre
               </div>
               <div class="faint">valor estimado após pagar todas as contas</div>
@@ -75,7 +75,7 @@
         </div>
       } @else {
         <div class="hint-box">
-          <i class="pi pi-info-circle"></i>
+          <app-illustration name="bulb" [size]="28" />
           Cadastre sua renda para calcular quanto sobra no mês.
           <a routerLink="/renda">Adicionar renda</a>
         </div>
@@ -103,10 +103,10 @@
             <span [style.width.%]="c.percent" [style.background]="c.color" [pTooltip]="c.label + ' · ' + (c.percent | number: '1.0-1') + '%'"></span>
           }
         </div>
-        <div class="scroll-list">
+        <div class="scroll-list stagger">
           @for (c of spending(); track c.key) {
             <div class="list-row">
-              <span class="cat-ic" [style.--c]="c.color"><i [class]="c.icon"></i></span>
+              <span class="cat-ic" [style.--c]="c.color"><img [src]="c.art" width="18" height="18" alt="" /></span>
               <span class="grow ellipsis">{{ c.label }}</span>
               <span class="faint pct-col">{{ c.percent | number: '1.0-1' }}%</span>
               <span class="amount">{{ c.amount | brl }}</span>
@@ -133,8 +133,8 @@
         <p-button label="Ver fatura" size="small" severity="secondary" [outlined]="true" (onClick)="openInvoices()" />
         @if (d.cards.cards.length > 1) {
           <div class="row">
-            <button type="button" class="nav-btn" (click)="shiftCards(-1)" [disabled]="cardIndex() === 0" aria-label="Anterior"><i class="pi pi-angle-left"></i></button>
-            <button type="button" class="nav-btn" (click)="shiftCards(1)" [disabled]="cardIndex() >= d.cards.cards.length - 1" aria-label="Próximo"><i class="pi pi-angle-right"></i></button>
+            <button type="button" class="nav-btn" (click)="shiftCards(-1)" [disabled]="cardIndex() === 0" aria-label="Anterior"><lucide-icon [img]="I.ChevronLeft" [size]="14" /></button>
+            <button type="button" class="nav-btn" (click)="shiftCards(1)" [disabled]="cardIndex() >= d.cards.cards.length - 1" aria-label="Próximo"><lucide-icon [img]="I.ChevronRight" [size]="14" /></button>
           </div>
         }
       </div>
@@ -210,12 +210,12 @@
         </div>
       }
 
-      <div class="bill-list">
+      <div class="bill-list stagger">
         @for (item of filteredItems(); track item.kind + item.id) {
           <label class="list-row bill-item" [class.paid]="item.paid">
             <p-checkbox [binary]="true" [ngModel]="item.paid" (onChange)="toggleItem(item)" />
-            <span class="grow ellipsis">{{ item.description }}</span>
-            @if (item.kind === 'INVOICE') { <i class="pi pi-credit-card faint" style="font-size: 0.7rem"></i> }
+            <span class="grow ellipsis"><span class="txt">{{ item.description }}</span></span>
+            @if (item.kind === 'INVOICE') { <lucide-icon [img]="I.CreditCard" [size]="13" class="faint" /> }
             <span class="amount">{{ item.amount | brl }}</span>
           </label>
         } @empty {
@@ -234,7 +234,7 @@
             <app-money [value]="h.amount" size="lg" />
             @if (h.hasIncome) {
               <div class="ref" [class.text-green]="h.ok" [class.text-red]="!h.ok">
-                <i class="pi" [class.pi-check]="h.ok" [class.pi-exclamation-triangle]="!h.ok"></i>
+                <lucide-icon [img]="h.ok ? I.CircleCheck : I.TriangleAlert" [size]="13" [strokeWidth]="2.5" />
                 {{ h.percent | number: '1.0-1' }}% da renda <span class="faint">referência: até {{ h.reference }}%</span>
               </div>
             } @else {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, input, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -56,7 +56,10 @@ import { AuthHero } from './auth-hero';
     </div>
   `,
 })
-export class Register {
+export class Register implements OnInit {
+  /** ?email=... vindo da landing page (pré-preenche o cadastro). */
+  readonly email = input<string>();
+
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
@@ -70,6 +73,11 @@ export class Register {
     acceptTerms: [false, Validators.requiredTrue],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72), Validators.pattern(/^(?=.*[A-Za-z])(?=.*\d).+$/)]],
   });
+
+  ngOnInit(): void {
+    const email = this.email()?.trim();
+    if (email && email.length <= 160) this.form.patchValue({ email });
+  }
 
   protected submit(): void {
     if (this.form.invalid) return;
