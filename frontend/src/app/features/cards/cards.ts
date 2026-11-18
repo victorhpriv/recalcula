@@ -16,13 +16,14 @@ import { CATEGORY_META, INVOICE_STATUS } from '../../shared/utils/labels';
 import { BrlPipe } from '../../shared/utils/money.pipe';
 import { MonthPipe } from '../../shared/utils/month.pipe';
 import { CardForm } from './card-form';
+import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { CategoryIcon } from '../../shared/ui/category-icon';
 
 @Component({
   selector: 'app-cards',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [EmptyState, CategoryIcon, DatePipe, ButtonModule, ProgressBarModule, TagModule, Money, BrlPipe, MonthPipe, CardForm, PurchaseForm],
+  imports: [Illustration, EmptyState, CategoryIcon, DatePipe, ButtonModule, ProgressBarModule, TagModule, Money, BrlPipe, MonthPipe, CardForm, PurchaseForm],
   templateUrl: './cards.html',
   styleUrl: './cards.scss',
 })

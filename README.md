@@ -66,7 +66,7 @@ O endereço do app usado nos botões fica em `landing/assets/config.js`.
 | **Minha conta** | Nome, troca de senha, confirmação de e-mail, exportação dos dados (JSON) e exclusão da conta |
 | **Acesso** | Cadastro com aceite dos termos, login, "esqueci minha senha" com link por e-mail e confirmação de e-mail |
 
-**Visual:** marca própria, fonte Schibsted Grotesk, paleta esmeralda, curva do saldo previsto na visão geral, ícone por categoria, checklist de primeiros passos, tema claro/escuro e layout responsivo. É um **PWA**: pode ser instalado no celular e no computador (a interface fica em cache; dados da API nunca são cacheados).
+**Visual:** ilustrações próprias em SVG (`frontend/public/illustrations`), cor e ícone por categoria, estados vazios ilustrados, checklist de primeiros passos, valores com contagem animada, tema claro/escuro e layout responsivo. É um **PWA**: pode ser instalado no celular e no computador (a interface fica em cache; dados da API nunca são cacheados).
 
 O botão **Adicionar** no topo lança gasto, conta, compra no cartão ou renda de qualquer tela. O seletor de mês vale para o app inteiro.
 

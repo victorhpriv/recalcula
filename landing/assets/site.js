@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   var appUrl = (window.SALDO_APP_URL || '').replace(/\/$/, '');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- links para o app ----------
   document.querySelectorAll('[data-app]').forEach(function (a) {
@@ -16,12 +17,13 @@
       var email = (input && input.value || '').trim();
       if (email && !EMAIL_RE.test(email)) {
         form.classList.remove('invalid');
-        void form.offsetWidth;
+        void form.offsetWidth; // reinicia a animação
         form.classList.add('invalid');
         input.focus();
         return;
       }
-      window.location.href = appUrl + '/cadastro' + (email ? '?email=' + encodeURIComponent(email) : '');
+      var url = appUrl + '/cadastro' + (email ? '?email=' + encodeURIComponent(email) : '');
+      window.location.href = url;
     });
     form.addEventListener('animationend', function () { form.classList.remove('invalid'); });
   });
@@ -43,101 +45,93 @@
     });
   }
 
-  // ---------- borda do menu ao rolar ----------
-  if (nav) {
-    var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 8); };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  }
-
-  // ---------- simulador do mês ----------
-  var sim = document.getElementById('sim');
-  if (!sim) return;
-
-  var DAYS = 30, W = 360, H = 150, PAD_T = 8, PAD_B = 6;
-  var chart = sim.querySelector('.sim-chart');
-  var brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-  function parseMoney(v) {
-    var s = String(v || '').replace(/[^\d,.-]/g, '');
-    // "1.900,50" -> 1900.50 ; "1900.5" -> 1900.5
-    if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
-    else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '');
-    var n = parseFloat(s);
-    return isFinite(n) && n > 0 ? Math.min(n, 1e7) : 0;
-  }
-  function fmtInput(n) {
-    return n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
-  }
-
-  var incomeEl = sim.querySelector('[data-sim=income]');
-  var dailyEl = sim.querySelector('[data-sim=daily]');
-  var rows = Array.prototype.slice.call(sim.querySelectorAll('.sim-bills tbody tr'));
-  var line = document.getElementById('simLine');
-  var area = document.getElementById('simArea');
-  var zero = document.getElementById('simZero');
-  var dots = document.getElementById('simDots');
-  var label = document.getElementById('simLabel');
-  var value = document.getElementById('simValue');
-  var note = document.getElementById('simNote');
-
-  function render() {
-    W = Math.max(120, Math.round(chart.clientWidth || 360));
-    H = Math.max(100, Math.round(chart.clientHeight || 150));
-    chart.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    zero.setAttribute('x2', W);
-    var income = parseMoney(incomeEl.value);
-    var daily = parseMoney(dailyEl.value);
-    var byDay = {};
-    rows.forEach(function (r) {
-      var day = Math.max(1, Math.min(DAYS, parseInt(r.querySelector('[data-day]').value, 10) || 1));
-      byDay[day] = (byDay[day] || 0) + parseMoney(r.querySelector('[data-amount]').value);
+  // ---------- marquee contínuo: duplica os itens ----------
+  document.querySelectorAll('.marquee-track').forEach(function (track) {
+    Array.prototype.slice.call(track.children).forEach(function (el) {
+      var clone = el.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
     });
-
-    var v = income, rate = daily / DAYS, pts = [], marks = [], min = 0, max = Math.max(income, 1);
-    for (var d = 1; d <= DAYS; d++) {
-      v -= rate;
-      var before = v;
-      v -= byDay[d] || 0;
-      pts.push([d, before, v]);
-      if (byDay[d]) marks.push([d, v]);
-      min = Math.min(min, before, v);
-    }
-    var end = v;
-    var x = function (d) { return (d / DAYS) * W; };
-    var y = function (val) { return PAD_T + (1 - (val - min) / (max - min || 1)) * (H - PAD_T - PAD_B); };
-
-    var p = 'M0,' + y(income).toFixed(1);
-    pts.forEach(function (s) {
-      p += ' L' + x(s[0]).toFixed(1) + ',' + y(s[1]).toFixed(1);
-      if (s[2] !== s[1]) p += ' L' + x(s[0]).toFixed(1) + ',' + y(s[2]).toFixed(1);
-    });
-    line.setAttribute('d', p);
-    area.setAttribute('d', p + ' L' + W + ',' + H + ' L0,' + H + ' Z');
-    var zy = y(0).toFixed(1);
-    zero.setAttribute('y1', zy); zero.setAttribute('y2', zy);
-    dots.innerHTML = marks.map(function (m) {
-      return '<circle class="sim-dot" r="3" cx="' + x(m[0]).toFixed(1) + '" cy="' + y(m[1]).toFixed(1) + '"></circle>';
-    }).join('');
-
-    var neg = end < 0;
-    sim.classList.toggle('neg', neg);
-    label.textContent = neg ? 'Faltam no fim do mês' : 'Sobram no fim do mês';
-    value.textContent = brl.format(Math.abs(end));
-    if (income <= 0) note.textContent = 'Informe a sua renda';
-    else if (neg) {
-      var firstNeg = pts.filter(function (s) { return s[2] < 0; })[0];
-      note.textContent = 'O saldo fica negativo a partir do dia ' + firstNeg[0];
-    } else note.textContent = Math.round((end / income) * 100) + '% da renda';
-  }
-
-  sim.addEventListener('input', render);
-  sim.addEventListener('focusout', function (e) {
-    var t = e.target;
-    if (t.matches('[data-amount], [data-sim]')) { var n = parseMoney(t.value); t.value = n ? fmtInput(n) : '0'; }
-    if (t.matches('[data-day]')) t.value = Math.max(1, Math.min(28, parseInt(t.value, 10) || 1));
-    render();
   });
-  window.addEventListener('resize', render, { passive: true });
-  render();
+
+  // ---------- rolagem: borda do menu, inclinação da vitrine e CTA fixo ----------
+  var showcase = document.querySelector('[data-tilt]');
+  var browser = showcase && showcase.querySelector('.browser');
+  var hero = document.querySelector('.hero');
+  var sticky = document.getElementById('stickyCta');
+  var ticking = false;
+
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY;
+    if (nav) nav.classList.toggle('scrolled', y > 8);
+
+    if (browser && !reduceMotion && window.innerWidth > 760) {
+      var rect = showcase.getBoundingClientRect();
+      var vh = window.innerHeight;
+      // 0 quando a vitrine entra pela base da tela, 1 quando chega a ~30% do topo
+      var p = Math.min(Math.max((vh - rect.top) / (vh * 0.7), 0), 1);
+      browser.style.setProperty('--tilt', (12 * (1 - p)).toFixed(2) + 'deg');
+      browser.style.setProperty('--scale', (0.96 + 0.04 * p).toFixed(3));
+    }
+
+    if (sticky && hero) {
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      var nearEnd = window.innerHeight + y > document.body.scrollHeight - 280;
+      sticky.classList.toggle('show', heroBottom < 0 && !nearEnd);
+    }
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+  }, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  // ---------- paralaxe dos ícones 3D com o mouse ----------
+  if (showcase && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+    var floats = showcase.querySelectorAll('[data-depth]');
+    showcase.addEventListener('pointermove', function (e) {
+      var r = showcase.getBoundingClientRect();
+      var dx = (e.clientX - r.left) / r.width - 0.5;
+      var dy = (e.clientY - r.top) / r.height - 0.5;
+      floats.forEach(function (el) {
+        var d = Number(el.getAttribute('data-depth')) || 0;
+        el.style.setProperty('--px', (dx * d).toFixed(1) + 'px');
+        el.style.setProperty('--py', (dy * d).toFixed(1) + 'px');
+      });
+    });
+    showcase.addEventListener('pointerleave', function () {
+      floats.forEach(function (el) { el.style.setProperty('--px', '0px'); el.style.setProperty('--py', '0px'); });
+    });
+  }
+
+  // ---------- luz que segue o mouse nos cards de recursos ----------
+  document.querySelectorAll('[data-spotlight] .feature').forEach(function (card) {
+    card.addEventListener('pointermove', function (e) {
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+
+  // ---------- FAQ: só uma resposta aberta por vez ----------
+  var faqs = document.querySelectorAll('.faq details');
+  faqs.forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (d.open) faqs.forEach(function (o) { if (o !== d) o.open = false; });
+    });
+  });
+
+  // ---------- revelação ao rolar ----------
+  var items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || reduceMotion) {
+    items.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { io.observe(el); });
 })();

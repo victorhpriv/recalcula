@@ -18,16 +18,17 @@ import { Money } from '../../shared/ui/money';
 import { toIsoDate } from '../../shared/utils/dates';
 import { GOAL_COLORS } from '../../shared/utils/labels';
 import { BrlPipe } from '../../shared/utils/money.pipe';
+import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 
 @Component({
   selector: 'app-reserve',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [EmptyState, DatePipe, ReactiveFormsModule, ButtonModule, DialogModule, InputTextModule, InputNumberModule, DatePickerModule,
+  imports: [Illustration, EmptyState, DatePipe, ReactiveFormsModule, ButtonModule, DialogModule, InputTextModule, InputNumberModule, DatePickerModule,
     ProgressBarModule, SelectButtonModule, Money, BrlPipe],
   template: `
     <div class="page-header">
-      <div class="page-hero">
+      <div class="page-hero"><app-illustration name="piggy" />
         <div>
           <h1>Reserva</h1>
           <p>Reserva de emergência e objetivos (viagem, carro, estudos…).</p>
@@ -50,7 +51,7 @@ import { EmptyState } from '../../shared/ui/empty-state';
               </div>
             </div>
             <app-money [value]="g.saved" size="md" />
-            <div class="faint" style="font-size: 0.75rem">{{ g.percent }}% de {{ g.targetAmount | brl }}</div>
+            <div class="faint" style="font-size: 0.75rem">de {{ g.targetAmount | brl }} · {{ g.percent }}%</div>
             <div class="bar"><span [style.width.%]="g.percent > 100 ? 100 : g.percent" [style.background]="g.color"></span></div>
             <div class="row" style="margin-top: 0.75rem">
               <p-button label="Guardar" icon="pi pi-plus" size="small" (onClick)="openMovement(g, 'APORTE')" />
@@ -72,7 +73,7 @@ import { EmptyState } from '../../shared/ui/empty-state';
           <div class="list-row">
             <div class="grow">
               <div style="font-weight: 600">{{ m.description || (m.amount > 0 ? 'Aporte' : 'Resgate') }}</div>
-              <div class="faint" style="font-size: 0.72rem">{{ m.goalName }}, {{ m.movementDate | date: 'dd/MM/yyyy' }}</div>
+              <div class="faint" style="font-size: 0.72rem">{{ m.goalName }} · {{ m.movementDate | date: 'dd/MM/yyyy' }}</div>
             </div>
             <span class="amount" [class.text-green]="m.amount > 0" [class.text-red]="m.amount < 0">{{ m.amount > 0 ? '+' : '−' }} {{ abs(m.amount) | brl }}</span>
             <p-button icon="pi pi-trash" [text]="true" [rounded]="true" size="small" severity="danger" (onClick)="removeMovement(m)" ariaLabel="Excluir" />

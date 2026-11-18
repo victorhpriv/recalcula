@@ -6,20 +6,18 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { AuthService } from '../../core/auth/auth.service';
 import { AuthHero } from './auth-hero';
-import { LucideAngularModule } from 'lucide-angular';
-import { I } from '../../shared/ui/icons';
 
 @Component({
   selector: 'app-forgot-password',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [LucideAngularModule, ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule, AuthHero],
+  imports: [ReactiveFormsModule, RouterLink, ButtonModule, InputTextModule, AuthHero],
   styleUrl: './auth.scss',
   template: `
     <app-auth-hero class="hero" />
     <div class="form-side">
       @if (sent()) {
         <div class="box">
-          <span class="status-ic"><lucide-icon [img]="I.Mail" [size]="22" /></span>
+          <img src="3d/envelope.webp" width="72" height="72" alt="" />
           <h2>Confira seu e-mail</h2>
           <p class="sub">Se existir uma conta com <b>{{ form.controls.email.value }}</b>, enviamos um link para criar uma nova senha. Ele vale por 1 hora.</p>
           <p class="sub">Não chegou? Veja a caixa de spam ou tente de novo em alguns minutos.</p>
@@ -41,7 +39,6 @@ import { I } from '../../shared/ui/icons';
   `,
 })
 export class ForgotPassword {
-  protected readonly I = I;
   private readonly auth = inject(AuthService);
   private readonly fb = inject(FormBuilder);
 

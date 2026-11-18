@@ -1,7 +1,7 @@
 # Avisos de terceiros
 
 ## Fluent Emoji (ícones 3D)
-Os ícones 3D de categoria em `frontend/public/3d/` são do projeto
+Os ícones 3D em `frontend/public/3d/` e `landing/assets/3d/` são do projeto
 [Fluent Emoji](https://github.com/microsoft/fluentui-emoji), da Microsoft, distribuídos sob a licença MIT.
 
 ```
@@ -31,6 +31,5 @@ SOFTWARE.
 ## Lucide (ícones de interface)
 Ícones de interface do [Lucide](https://lucide.dev), licença ISC.
 
-## Schibsted Grotesk (fonte)
-Fonte [Schibsted Grotesk](https://github.com/schibsted/schibsted-grotesk), da Schibsted Media, licença SIL Open Font License 1.1.
-Distribuída pelo pacote `@fontsource-variable/schibsted-grotesk` e copiada para `landing/assets/fonts/`.
+## Inter (fonte)
+Fonte [Inter](https://rsms.me/inter/), de Rasmus Andersson, licença SIL Open Font License 1.1.

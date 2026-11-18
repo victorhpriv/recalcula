@@ -12,16 +12,17 @@ import { CashEntryForm } from '../../shared/forms/cash-entry-form';
 import { Money } from '../../shared/ui/money';
 import { CATEGORY_META } from '../../shared/utils/labels';
 import { BrlPipe } from '../../shared/utils/money.pipe';
+import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 import { CategoryIcon } from '../../shared/ui/category-icon';
 
 @Component({
   selector: 'app-cash-flow',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [EmptyState, CategoryIcon, DatePipe, ButtonModule, SkeletonModule, Money, BrlPipe, CashEntryForm],
+  imports: [Illustration, EmptyState, CategoryIcon, DatePipe, ButtonModule, SkeletonModule, Money, BrlPipe, CashEntryForm],
   template: `
     <div class="page-header">
-      <div class="page-hero">
+      <div class="page-hero"><app-illustration name="flow" />
         <div>
           <h1>Fluxo de caixa</h1>
           <p>Gastos e entradas do dia a dia em {{ state.monthLabel() }}.</p>
@@ -81,8 +82,7 @@ import { CategoryIcon } from '../../shared/ui/category-icon';
   `,
   styles: `
     .cols { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; align-items: start; }
-    .day-title { font-size: 0.75rem; color: var(--app-text-2); margin: 1.1rem 0 0.15rem; font-weight: 600; }
-    .day-title::first-letter { text-transform: uppercase; }
+    .day-title { font-size: 0.7rem; text-transform: capitalize; color: var(--app-text-3); margin: 1rem 0 0.1rem; font-weight: 600; }
     .cat-icon { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--app-red-soft); color: var(--app-red); flex-shrink: 0; }
     .cat-icon.in { background: var(--app-green-soft); color: var(--app-green); }
     .cat-icon i { font-size: 0.8rem; }

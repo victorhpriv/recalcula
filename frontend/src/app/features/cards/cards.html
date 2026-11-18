@@ -1,5 +1,5 @@
 <div class="page-header">
-  <div class="page-hero">
+  <div class="page-hero"><app-illustration name="card" />
     <div>
       <h1>Cartões</h1>
       <p>Faturas, parcelas e limite de cada cartão em {{ state.monthLabel() }}.</p>
@@ -11,14 +11,15 @@
   </div>
 </div>
 
-<div class="card-list">
+<div class="card-list rise">
   @for (c of cards.value() ?? []; track c.id) {
-    <button type="button" class="cc" [class.on]="selected()?.id === c.id" [style.--cc]="c.color" (click)="selectedId.set(c.id)"
-      [attr.aria-pressed]="selected()?.id === c.id">
-      <div class="cc-top"><span class="name">{{ c.name }}</span><span class="bank">{{ c.bank }}</span></div>
-      <div class="foot">
+    <button type="button" class="cc" [class.on]="selected()?.id === c.id" [style.--cc]="c.color" (click)="selectedId.set(c.id)">
+      <div class="between"><span class="bank"><span class="bank-badge">{{ c.bank.charAt(0) }}</span>{{ c.bank }}</span><svg class="nfc" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8.5 16.5a5 5 0 0 0 0-9"/><path d="M12 19a9 9 0 0 0 0-14"/><path d="M15.5 21.5a13 13 0 0 0 0-19"/></svg></div>
+      <div class="chip"></div>
+      <div class="name">{{ c.name }}</div>
+      <div class="between foot">
         <div><div class="l">Fatura</div><b>{{ c.invoice.amount | brl }}</b></div>
-        <div class="r"><div class="l">Limite livre</div><b>{{ c.available | brl }}</b></div>
+        <div style="text-align: right"><div class="l">Livre</div><b>{{ c.available | brl }}</b></div>
       </div>
     </button>
   } @empty {
@@ -37,12 +38,12 @@
     <section class="panel">
       <div class="between">
         <div>
-          <div class="panel-title">{{ c.name }}: fatura de {{ state.monthLabel() }}</div>
+          <div class="panel-title">Fatura de {{ state.monthLabel() }} · {{ c.name }}</div>
           @if (invoice.value(); as inv) {
             <app-money [value]="inv.summary.amount" size="lg" />
             <div class="row faint" style="font-size: 0.75rem">
               <p-tag [value]="status[inv.summary.status].label" [severity]="status[inv.summary.status].severity" />
-              fecha em {{ inv.summary.closingDate | date: 'dd/MM' }}, vence em {{ inv.summary.dueDate | date: 'dd/MM' }}
+              fecha {{ inv.summary.closingDate | date: 'dd/MM' }} · vence {{ inv.summary.dueDate | date: 'dd/MM' }}
             </div>
           }
         </div>
@@ -65,7 +66,8 @@
             <app-category-icon [category]="i.category" />
             <div class="grow">
               <div style="font-weight: 600">{{ i.description }}</div>
-              <div class="faint" style="font-size: 0.72rem">{{ i.purchaseDate | date: 'dd/MM/yyyy' }}@if (i.installments > 1) {<span>, parcela {{ i.installmentNumber }} de {{ i.installments }}</span>}
+              <div class="faint" style="font-size: 0.72rem">{{ i.purchaseDate | date: 'dd/MM/yyyy' }}
+                @if (i.installments > 1) { · parcela {{ i.installmentNumber }}/{{ i.installments }} }
               </div>
             </div>
             <span class="amount">{{ i.amount | brl }}</span>
@@ -85,7 +87,7 @@
         </div>
         <p-progressbar [value]="usedPct()" [showValue]="false" [style]="{ height: '8px' }" />
         <div style="margin-top: 0.6rem; font-size: 0.8rem">Disponível: <b>{{ c.available | brl }}</b></div>
-        <div class="faint" style="font-size: 0.72rem; margin-top: 0.3rem">Fecha no dia {{ c.closingDay }} e vence no dia {{ c.dueDay }}</div>
+        <div class="faint" style="font-size: 0.72rem; margin-top: 0.3rem">Fecha dia {{ c.closingDay }} · vence dia {{ c.dueDay }}</div>
       </section>
 
       <section class="panel">
@@ -107,7 +109,8 @@
       <div class="list-row">
         <div class="grow">
           <div style="font-weight: 600">{{ p.description }}</div>
-          <div class="faint" style="font-size: 0.72rem">{{ p.purchaseDate | date: 'dd/MM/yyyy' }}, {{ meta[p.category].label }}, {{ p.installments > 1 ? p.installments + 'x' : 'à vista' }}, 1ª fatura em {{ p.firstDueMonth | month: 'short' }}</div>
+          <div class="faint" style="font-size: 0.72rem">{{ p.purchaseDate | date: 'dd/MM/yyyy' }} · {{ meta[p.category].label }}
+            · {{ p.installments > 1 ? p.installments + 'x' : 'à vista' }} · 1ª fatura {{ p.firstDueMonth | month: 'short' }}</div>
         </div>
         <span class="amount">{{ p.totalAmount | brl }}</span>
         <p-button icon="pi pi-pencil" [text]="true" [rounded]="true" size="small" severity="secondary" (onClick)="openPurchase(p)" ariaLabel="Editar" />

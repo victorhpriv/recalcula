@@ -12,7 +12,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 })
 export class Avatar {
   readonly name = input('');
-  readonly color = input('var(--app-primary)');
+  readonly color = input('#2f5bea');
   readonly size = input(28);
   protected readonly initial = computed(() => (this.name().trim()[0] ?? '?').toUpperCase());
 }

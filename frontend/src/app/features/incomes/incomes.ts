@@ -12,15 +12,16 @@ import { Money } from '../../shared/ui/money';
 import { INCOME_TYPE_OPTIONS } from '../../shared/utils/labels';
 import { BrlPipe } from '../../shared/utils/money.pipe';
 import { MonthPipe } from '../../shared/utils/month.pipe';
+import { Illustration } from '../../shared/ui/illustration';
 import { EmptyState } from '../../shared/ui/empty-state';
 
 @Component({
   selector: 'app-incomes',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [EmptyState, ButtonModule, TagModule, Money, BrlPipe, MonthPipe, IncomeForm],
+  imports: [Illustration, EmptyState, ButtonModule, TagModule, Money, BrlPipe, MonthPipe, IncomeForm],
   template: `
     <div class="page-header">
-      <div class="page-hero">
+      <div class="page-hero"><app-illustration name="money" />
         <div>
           <h1>Renda</h1>
           <p>Salário e outras entradas fixas ou avulsas, usados para calcular o seu saldo do mês.</p>
@@ -42,7 +43,7 @@ import { EmptyState } from '../../shared/ui/empty-state';
           <div class="grow">
             <div style="font-weight: 600">{{ i.description }}</div>
             <div class="faint" style="font-size: 0.72rem">
-              {{ typeLabel(i) }},
+              {{ typeLabel(i) }} ·
               @if (i.recurring) { mensal desde {{ i.startMonth | month: 'short' }}@if (i.endMonth) { até {{ i.endMonth | month: 'short' }} } }
               @else { só em {{ i.startMonth | month: 'short' }} }
             </div>
