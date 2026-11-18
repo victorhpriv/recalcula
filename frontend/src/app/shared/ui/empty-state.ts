@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 import { I } from './icons';
-import { IllustrationName } from './illustration';
+/** Ícone do estado vazio, pelo assunto da tela. */
+export type IllustrationName = 'empty' | 'card' | 'receipt' | 'piggy' | 'money' | 'flow' | 'chart';
 
 const ICON: Partial<Record<IllustrationName, LucideIconData>> = {
   card: I.CreditCard,
