@@ -35,6 +35,12 @@ services:
       MAIL_FROM: ${MAIL_FROM:-Saldo <nao-responda@saldo.app>}
     expose:
       - "8080"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend
+          ignore:
+            - target/
 
   web:
     build: ./frontend
@@ -42,11 +48,32 @@ services:
       - api
     ports:
       - "8081:80"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./frontend
+          ignore:
+            - node_modules/
+            - dist/
+            - .angular/
 
   landing:
     build: ./landing
     ports:
       - "8080:80"
+    develop:
+      watch:
+        # HTML/CSS/imagens: copia direto pro container, sem rebuild
+        - action: sync
+          path: ./landing
+          target: /usr/share/nginx/html
+          ignore:
+            - Dockerfile
+            - nginx.conf
+        - action: rebuild
+          path: ./landing/nginx.conf
+        - action: rebuild
+          path: ./landing/Dockerfile
 
 volumes:
   pgdata:
