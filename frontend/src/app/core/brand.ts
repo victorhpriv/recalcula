@@ -5,5 +5,4 @@
 export const BRAND = {
   name: 'Recalcula',
   tagline: 'Finanças pessoais',
-  supportEmail: 'contato@recalcula.app',
 } as const;

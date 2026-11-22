@@ -1,7 +1,7 @@
 # Perfil de desenvolvimento local: ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 app:
   jwt:
-    # Apenas para desenvolvimento. Em produção use a variável JWT_SECRET.
+    # Sem valor padrão: defina JWT_SECRET também em desenvolvimento (openssl rand -base64 48).
     secret: ${JWT_SECRET:}
   cookie:
     secure: false

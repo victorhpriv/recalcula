@@ -214,7 +214,9 @@ docker compose up db -d
 
 # 2. Backend (porta 8080, perfil dev com Swagger em /swagger-ui.html)
 cd backend
-DB_PASSWORD=<a mesma do .env> mvn spring-boot:run -Dspring-boot.run.profiles=dev
+export DB_PASSWORD=<a mesma do .env>
+export JWT_SECRET=$(openssl rand -base64 48)
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
 # 3. Frontend (porta 4200, com proxy de /api para a 8080)
 cd frontend
@@ -319,4 +321,4 @@ Feito por **Victor**, desenvolvedor full stack (Java, Spring Boot e Angular).
 
 ---
 
-<sub>Ícones 3D: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (Microsoft, MIT). Ícones de interface: [Lucide](https://lucide.dev) (ISC). Detalhes em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).</sub>
+<sub>Ícones 3D: [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (Microsoft, MIT). Ícones de interface: [Lucide](https://lucide.dev) (ISC). Fonte: [Inter](https://rsms.me/inter/) (OFL 1.1). Licenças completas em [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).</sub>
