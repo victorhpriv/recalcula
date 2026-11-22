@@ -6,29 +6,29 @@ export const routes: Routes = [
   {
     path: 'login',
     canMatch: [guestGuard],
-    title: 'Entrar · Saldo',
+    title: 'Entrar · Recalcula',
     loadComponent: () => import('./features/auth/login').then((m) => m.Login),
   },
   {
     path: 'cadastro',
     canMatch: [guestGuard],
-    title: 'Criar conta · Saldo',
+    title: 'Criar conta · Recalcula',
     loadComponent: () => import('./features/auth/register').then((m) => m.Register),
   },
   {
     path: 'esqueci-senha',
     canMatch: [guestGuard],
-    title: 'Esqueci minha senha · Saldo',
+    title: 'Esqueci minha senha · Recalcula',
     loadComponent: () => import('./features/auth/forgot-password').then((m) => m.ForgotPassword),
   },
   {
     path: 'redefinir-senha',
-    title: 'Nova senha · Saldo',
+    title: 'Nova senha · Recalcula',
     loadComponent: () => import('./features/auth/reset-password').then((m) => m.ResetPassword),
   },
   {
     path: 'confirmar-email',
-    title: 'Confirmar e-mail · Saldo',
+    title: 'Confirmar e-mail · Recalcula',
     loadComponent: () => import('./features/auth/verify-email').then((m) => m.VerifyEmail),
   },
   {

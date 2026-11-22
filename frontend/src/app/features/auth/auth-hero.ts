@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-auth-hero',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="logo"><img src="favicon.svg" width="34" height="34" alt="" /> Saldo</div>
+    <div class="logo"><img src="favicon.svg" width="34" height="34" alt="" /> Recalcula</div>
     <div class="mock" aria-hidden="true">
       <div class="m-card m-balance">
         <div class="m-l">Saldo previsto</div>

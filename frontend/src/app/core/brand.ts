@@ -3,7 +3,7 @@
  * Para renomear o app, altere aqui (e o <title>/manifest em index.html e public/manifest.webmanifest).
  */
 export const BRAND = {
-  name: 'Saldo',
+  name: 'Recalcula',
   tagline: 'Finanças pessoais',
-  supportEmail: 'contato@saldo.app',
+  supportEmail: 'contato@recalcula.app',
 } as const;

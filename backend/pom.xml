@@ -14,7 +14,7 @@
     <groupId>br.com.saldo</groupId>
     <artifactId>saldo-api</artifactId>
     <version>1.0.0</version>
-    <name>Saldo - API</name>
+    <name>Recalcula - API</name>
     <description>API de controle financeiro pessoal</description>
 
     <properties>

@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="docs/logo.svg" alt="Saldo" width="72" height="72">
+<img src="docs/logo.svg" alt="Recalcula" width="72" height="72">
 
-# Saldo
+# Recalcula
 
 **Controle financeiro pessoal que mostra quanto sobra antes de o mês acabar.**
 
@@ -18,7 +18,7 @@ Renda, contas fixas, cartões com parcelas, gastos do dia a dia e reserva em uma
 
 <br>
 
-<img src="docs/screenshots/demo.gif" alt="Demonstração do Saldo: visão geral, filtro de contas por dia, cartões, contas e troca para o tema escuro" width="900">
+<img src="docs/screenshots/demo.gif" alt="Demonstração do Recalcula: visão geral, filtro de contas por dia, cartões, contas e troca para o tema escuro" width="900">
 
 </div>
 
@@ -43,7 +43,7 @@ Renda, contas fixas, cartões com parcelas, gastos do dia a dia e reserva em uma
 
 Planilha de gastos costuma funcionar por uma semana. O problema é que ela mostra o que já foi gasto, e a pergunta que importa é outra: **quanto vai sobrar no fim do mês?**
 
-O Saldo responde isso juntando tudo o que mexe no orçamento:
+O Recalcula responde isso juntando tudo o que mexe no orçamento:
 
 - a **renda** do mês (fixa ou avulsa);
 - as **contas fixas**, que se repetem sozinhas todo mês;
@@ -88,9 +88,9 @@ O resultado é o **saldo previsto**, recalculado a cada lançamento, com o detal
 </table>
 
 <p align="center">
-  <img src="docs/screenshots/mobile.webp" alt="Saldo no celular, tema claro" width="260">
+  <img src="docs/screenshots/mobile.webp" alt="Recalcula no celular, tema claro" width="260">
   &nbsp;&nbsp;
-  <img src="docs/screenshots/mobile-dark.webp" alt="Saldo no celular, tema escuro" width="260">
+  <img src="docs/screenshots/mobile-dark.webp" alt="Recalcula no celular, tema escuro" width="260">
 </p>
 
 <p align="center"><sub>Layout responsivo e instalável como app (PWA)</sub></p>
@@ -98,7 +98,7 @@ O resultado é o **saldo previsto**, recalculado a cada lançamento, com o detal
 <details>
 <summary><b>Landing page</b></summary>
 <br>
-<img src="docs/screenshots/landing.webp" alt="Landing page do Saldo">
+<img src="docs/screenshots/landing.webp" alt="Landing page do Recalcula">
 </details>
 
 > Os valores das imagens são fictícios.

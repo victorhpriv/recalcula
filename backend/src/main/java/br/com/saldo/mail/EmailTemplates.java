@@ -16,7 +16,7 @@ public final class EmailTemplates {
                 <tr><td align="center">
                 <table role="presentation" width="100%%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#ffffff;border-radius:16px;padding:32px">
                 <tr><td>
-                <div style="font-weight:800;font-size:20px;color:#2f5bea;margin-bottom:24px">Saldo</div>
+                <div style="font-weight:800;font-size:20px;color:#2f5bea;margin-bottom:24px">Recalcula</div>
                 <h1 style="font-size:22px;margin:0 0 12px">%s</h1>
                 <p style="font-size:15px;line-height:1.55;color:#5b6275;margin:0 0 8px">Olá, %s!</p>
                 <p style="font-size:15px;line-height:1.55;color:#5b6275;margin:0 0 24px">%s</p>

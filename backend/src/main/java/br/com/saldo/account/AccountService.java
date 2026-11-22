@@ -130,7 +130,7 @@ public class AccountService {
         String html = EmailTemplates.action(firstName(user), "Confirme seu e-mail",
                 "Falta pouco! Confirme seu e-mail para proteger sua conta e poder recuperá-la se esquecer a senha.",
                 "Confirmar e-mail", url, "O link vale por 48 horas.");
-        sendAsync(user.getEmail(), "Confirme seu e-mail no Saldo", html);
+        sendAsync(user.getEmail(), "Confirme seu e-mail no Recalcula", html);
     }
 
     // ---------------- recuperação de senha ----------------
@@ -149,7 +149,7 @@ public class AccountService {
             String html = EmailTemplates.action(firstName(user), "Redefinir sua senha",
                     "Recebemos um pedido para redefinir a senha da sua conta. Se não foi você, ignore este e-mail: sua senha continua a mesma.",
                     "Criar nova senha", url, "O link vale por 1 hora e só pode ser usado uma vez.");
-            sendAsync(user.getEmail(), "Redefinição de senha do Saldo", html);
+            sendAsync(user.getEmail(), "Redefinição de senha do Recalcula", html);
         });
     }
 

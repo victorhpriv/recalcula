@@ -78,7 +78,7 @@ import { I } from '../../shared/ui/icons';
       <div class="stack">
         <section class="panel">
           <div class="panel-title"><lucide-icon [img]="I.Download" [size]="16" /> Exportar meus dados</div>
-          <p class="muted txt">Baixe um arquivo JSON com tudo o que você cadastrou no Saldo: rendas, contas, cartões, compras, lançamentos e reserva.</p>
+          <p class="muted txt">Baixe um arquivo JSON com tudo o que você cadastrou no Recalcula: rendas, contas, cartões, compras, lançamentos e reserva.</p>
           <p-button label="Baixar meus dados" icon="pi pi-download" severity="secondary" [outlined]="true" [loading]="exporting()" (onClick)="exportData()" />
         </section>
 

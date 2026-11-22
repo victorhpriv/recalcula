@@ -1,6 +1,6 @@
 {
-  "name": "Saldo · Finanças pessoais",
-  "short_name": "Saldo",
+  "name": "Recalcula · Finanças pessoais",
+  "short_name": "Recalcula",
   "description": "Controle financeiro pessoal: contas, cartões, gastos e reserva.",
   "lang": "pt-BR",
   "start_url": "/",

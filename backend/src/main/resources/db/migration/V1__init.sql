@@ -1,4 +1,4 @@
--- Saldo - schema inicial (controle financeiro pessoal)
+-- Recalcula - schema inicial (controle financeiro pessoal)
 -- Todos os dados pertencem a um usuário (user_id). Um futuro módulo de "contas compartilhadas"
 -- pode ser adicionado com novas tabelas sem alterar estas.
 
