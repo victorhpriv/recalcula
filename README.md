@@ -8,7 +8,7 @@
 
 Renda, contas fixas, cartões com parcelas, gastos do dia a dia e reserva em uma tela só.
 
-[![CI](https://github.com/victorhpriv/saldo/actions/workflows/ci.yml/badge.svg)](https://github.com/victorhpriv/saldo/actions/workflows/ci.yml)
+[![CI](https://github.com/victorhpriv/recalcula/actions/workflows/ci.yml/badge.svg)](https://github.com/victorhpriv/recalcula/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.5-6DB33F?logo=springboot&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)
@@ -191,8 +191,8 @@ Algumas decisões de projeto:
 Pré-requisito: Docker com Compose.
 
 ```bash
-git clone https://github.com/victorhpriv/saldo.git
-cd saldo
+git clone https://github.com/victorhpriv/recalcula.git
+cd recalcula
 cp .env.example .env
 # edite o .env e defina DB_PASSWORD e JWT_SECRET
 # (para gerar o segredo: openssl rand -base64 48)
@@ -246,7 +246,7 @@ Veja o modelo completo em [`.env.example`](.env.example).
 ## Estrutura de pastas
 
 ```
-saldo/
+recalcula/
 ├── backend/                 API Spring Boot (br.com.saldo)
 │   ├── auth/                login, cadastro, JWT, refresh token, proteção contra força bruta
 │   ├── account/             minha conta, tokens de e-mail, exportação e exclusão (LGPD)
